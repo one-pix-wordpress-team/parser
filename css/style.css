@@ -1,0 +1,76 @@
+.parser-header{
+    padding:30px 0;
+    background: #007bff;
+    border-bottom: 1px solid #ededed;
+}
+.parser-header h1 {
+font-size:24px;
+    font-weight: 700;
+    margin-bottom: 0;
+    color: #fff;
+}
+.menu-wrapper{
+    font-size:24px;
+}
+.parser-body{
+    margin-top:30px;
+}
+.parser-input, .test-connection{
+    padding: 15px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.separator{
+    margin: 10px;
+}
+.add-new-item{
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+    font-size: 37px;
+    line-height: 1;
+    font-weight: 900;
+    width: 54px;
+    height: 54px;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    cursor: pointer;
+}
+.remove-item{
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+    font-size: 55px;
+    line-height: 0.15;
+    font-weight: 500;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    float: right;
+    margin-right:30px;
+    padding-left: 5px;
+
+}
+.parser-item{
+    padding: 15px 0 30px 0;
+    margin: 15px 0 0 0;
+    border-bottom:2px solid #ededed;
+}
+.head-item{
+    font-size: 24px;
+    font-weight: 900;
+}
+.item-inner{
+    font-size: 22px;
+    font-weight: 500;
+}
+.headers{
+    padding-bottom: 15px;
+    border-bottom: 4px dashed #ededed;
+}
+.head-item:last-child .inner{
+    float:right;
+    margin-right:30px;
+}
