@@ -82,7 +82,38 @@ font-size:24px;
     padding-bottom: 15px;
     border-bottom: 4px dashed #ededed;
 }
-.head-item:last-child .inner{
-    float:right;
-    margin-right:30px;
+.head-item:last-child .inner {
+    float: right;
+    margin-right: 30px;
+}
+.popup-config{
+    -webkit-box-shadow: 0px -2px 30px 22px rgba(50, 50, 50, 0.29);
+    -moz-box-shadow:    0px -2px 30px 22px rgba(50, 50, 50, 0.29);
+    box-shadow:         0px -2px 30px 22px rgba(50, 50, 50, 0.29);
+    background: #fff;
+    z-index:99999;
+    position: absolute;
+    width: 900px;
+    left:calc(50% - 450px);
+    height: 600px;
+    top:calc(50% - 300px);
+}
+
+.popup-config .close{
+  position: absolute;
+    right: 30px;
+    cursor: pointer;
+    z-index: 99999999999999;
+}
+.popup-headers{
+    padding:30px 0;
+    border-bottom: 4px dashed #ededed;
+    margin:0 30px;
+    width: 100%;
+}
+.file-row{
+    width: 100%;
+    margin: 0 30px;
+    padding: 30px 0;
+    border-bottom: 1px solid #ededed;
 }

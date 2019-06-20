@@ -28,14 +28,28 @@ require_once 'header/header.php';
                 <div class="col-lg-3">
                     <div class="item-info btn"><i class="fa fa-eye" aria-hidden="true"></i></div><div class="remove-item btn btn-danger">-</div>
                 </div>
-                <div class="popup-config"></div>
-                <div class="spoiler col-lg-12">
-                    <div class="row">
-                    <div class="login-info col-lg-6 item-inner"><input class="w-100 parser-input" name="host-name" value="login"></div>
-                    <div class="password-info col-lg-3 item-inner"><input class="w-100 parser-input" name="host-name" value="password"></div>
-                        <div class="edit col-lg-3 item-inner"></div>
+                <div style="display:none" class="popup-config"><div class="spoiler col-lg-12">
+                        <div class="row">
+                            <div class="close"><i class="fa fa-times" aria-hidden="true"></i></div>
+                            <div class="popup-headers row">
+                            <div class="col-lg-9 head-item">
+                                File name
+                            </div>
+                            <div class="col-lg-3 head-item">
+                                Status
+                            </div>
+                            </div>
+                            <div class="row file-row">
+                                <div class="col-lg-9 host-inner item-inner">File</div>
+                                <div class="col-lg-3 item-inner" style="color:#28a745;">
+                                    Working
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                </div>
+
             </div>
         </div>
 

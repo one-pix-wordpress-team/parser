@@ -16,10 +16,13 @@ jQuery(document).ready(function(){
       var host = jQuery('.inp-host').val();
       var name = jQuery('.inp-username').val();
       var pass = jQuery('.inp-password').val();
+      var path1 = jQuery('.inp-file-1').val();
+      var path2 = jQuery('.inp-file-2').val();
+      var path3 = jQuery('.inp-file-3').val();
       $.ajax({
           method: 'POST',
-          url: '/inc/ajax/handlers/handler.php',
-          data: { action: 'addItem', host: host , username: name, password: pass }
+          url: '/handler.php',
+          data: { action: 'addItem', host: host , username: name, password: pass, path1: path1, path2: path2, path3: path3}
       })
           .success(function(data) {
               alert( "Data Saved: " + data );
@@ -44,7 +47,7 @@ jQuery(document).ready(function(){
         var host = jQuery(this).parents('.row').children('.host-inner').text();;
         $.ajax({
             method: 'POST',
-            url: '/inc/ajax/handlers/handler.php',
+            url: '/handler.php',
             data: { action: 'deleteItem', host: host }
         })
             .success(function(data) {
@@ -54,6 +57,10 @@ jQuery(document).ready(function(){
 
         jQuery(this).parents('.parser-item').remove();
     });
-
-
+jQuery('.item-info').on('click', function(){
+    jQuery(this).parents('.row').children('.popup-config').slideDown(200);
+})
+    jQuery('.close').on('click', function(){
+        jQuery(this).parents('.popup-config').slideUp(200);
+    })
 });
