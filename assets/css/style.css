@@ -38,7 +38,7 @@ font-size:24px;
     right: 30px;
     cursor: pointer;
 }
-.remove-item{
+.remove-item, .item-info{
     -webkit-border-radius: 100%;
     -moz-border-radius: 100%;
     border-radius: 100%;
@@ -49,9 +49,21 @@ font-size:24px;
     height: 30px;
     cursor: pointer;
     float: right;
-    margin-right:30px;
+    position: absolute;
+    margin-left: calc(100% - 90px);
     padding-left: 5px;
 
+}
+.item-info{
+    font-size: 20px;
+    margin-left: calc(100% - 150px);
+}
+.item-edit{
+    position: absolute;
+    margin-left: calc(100% - 90px);
+}
+.spoiler{
+    margin-top:30px;
 }
 .parser-item{
     padding: 15px 0 30px 0;
