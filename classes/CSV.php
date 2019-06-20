@@ -54,11 +54,14 @@ class CSV {
      * @return array массив строк прочитанного файла
      */
     public function getCSV() {
+        if (!is_writable($this->_csv_file))
+            return false;
+        
         $handle = fopen($this->_csv_file, "r"); //Открываем csv для чтения
 
         $array_line_full = [];
         //Проходим весь csv-файл, и читаем построчно
-        while (($line = fgetcsv($handle, 0, ";")) !== FALSE) {
+        while ($handle && ($line = fgetcsv($handle, 0, ";")) !== FALSE) {
             $array_line_full[] = $line; //Записываем строчки в массив
         }
         fclose($handle);

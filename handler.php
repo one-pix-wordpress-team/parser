@@ -3,6 +3,7 @@
  * Обработчики внешних запросов
  * 
  * @package moto-parser
+ * @version 1.0
  */
 
 require_once 'initialize.php';
@@ -11,15 +12,11 @@ if(empty($_POST['action']))
 	die('go away!');
 
 switch ($_POST['action']) {
-	case 'add':
+	case 'addItem':
 		# code...
 		break;
 
-	case 'remove':
-		# code...
-		break;
-
-	case 'get':
+	case 'deleteItem':
 		# code...
 		break;
 	

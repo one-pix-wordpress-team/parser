@@ -5,7 +5,7 @@
  * @package moto-parser
  */
 
-$data = [
+$data1 = [
 	'host' => 'ftp.wpsstatic.com',
 	'user' => 'wps',
 	'pass' => 'WPSftp14',
@@ -18,6 +18,18 @@ $data = [
 	'local_dir' => ROOT_DIR . DIRECTORY_SEPARATOR . 'download',
 	'cur_files' => ['filelist.txt', 'Pricebook/changes1801.csv'], // пример нужных файлов
 ];
+
+
+$core = dataCore::instance();
+
+$core->set_data('test', [$data1]);
+
+
+echo '<pre>data: ';
+echo "\n";
+print_r($core->get_data('test'));
+echo '</pre>';
+exit;
 
 $c = connection::init($data);
 
