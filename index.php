@@ -3,24 +3,11 @@
  * @package moto-parser
  */
 
-/**
- * некоторые параметры конфигурации
- */
-define('ROOT_DIR', __DIR__);
-
-/**
- * автозагрузчик
- */
-spl_autoload_register(function($class) {
-    $file = ROOT_DIR . DIRECTORY_SEPARATOR . 'classes/' . $class . '.php';
-    if (file_exists($file)) {
-        include $file;
-    }
-}, false);
-
-require_once 'inc/exceptions.php';
+require_once 'initialize.php';
 
 include 'runner.php';
+
+exit;
 
 require_once 'header/header.php';
 ?>
@@ -79,28 +66,3 @@ require_once 'header/header.php';
 </div>
 
 </div>
-=======
-/**
- * @package moto-parser
- */
-
-/**
- * некоторые параметры конфигурации
- */
-define('ROOT_DIR', __DIR__);
-
-/**
- * автозагрузчик
- */
-spl_autoload_register(function($class) {
-	$file = ROOT_DIR . DIRECTORY_SEPARATOR . 'classes/' . $class . '.php';
-	if (file_exists($file)) {
-		include $file;
-	}
-}, false);
-
-require_once 'inc/exceptions.php';
-
-include 'runner.php';
-
->>>>>>> Stashed changes
