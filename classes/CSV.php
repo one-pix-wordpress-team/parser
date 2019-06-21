@@ -43,6 +43,9 @@ class CSV {
         }
 
         foreach ($csv as $line) {
+            $line = array_map(function($l) {
+                return is_array($l) ? json_encode($l) : $l;
+            }, $line);
             fputcsv($handle, $line, ";");
         }
         fclose($handle);
@@ -62,6 +65,9 @@ class CSV {
         $array_line_full = [];
         //Проходим весь csv-файл, и читаем построчно
         while ($handle && ($line = fgetcsv($handle, 0, ";")) !== FALSE) {
+            $line = array_map(function($l) {
+                return json_decode($l, true) ?: $l;
+            }, $line);
             $array_line_full[] = $line; //Записываем строчки в массив
         }
         fclose($handle);

@@ -5,10 +5,10 @@
  * @package moto-parser
  * @version 1.0
  */
-class connection
+class connection implements initInterface
 {
-	protected $name;
-	protected $desc;
+	// protected $name;
+	// protected $desc;
 
 	protected $status = 'unable';
 
@@ -28,16 +28,17 @@ class connection
 	 */
 	function __construct($data)
 	{
+		$download_dir = dataCore::instance()->get_option('download_dir');
+
 		$this->host = !empty($data['host']) ? $data['host'] : '';
 		$this->user = $data['user'] ?? '';
 		$this->pass = $data['pass'] ?? '';
 
-		$this->name = $data['name'] ?? $data['host'];
-		$this->desc = $data['desc'] ?? '';
+		// $this->name = $data['name'] ?? $data['host'];
+		// $this->desc = $data['desc'] ?? '';
 
 		$this->cur_files = !empty($data['cur_files']) ? array_flip($data['cur_files']) : [];
-		$this->local_dir = !empty($data['local_dir']) ? $data['local_dir'] : $this->host;
-		$this->local_dir .= DIRECTORY_SEPARATOR;
+		$this->local_dir = $download_dir . DIRECTORY_SEPARATOR . $this->host . DIRECTORY_SEPARATOR;
 	}
 
 	/**
@@ -61,6 +62,20 @@ class connection
 		$c = new connection($data);
 		$c->connect();
 		return $c;
+	}
+
+	/**
+	 * Возвращает данные для сохранения
+	 * 
+	 * @return array
+	 */
+	function data_to_save() {
+		return $data = [
+			'host' => $this->host,
+			'user' => $this->user,
+			'pass' => $this->pass,
+			'cur_files' => array_keys($this->cur_files),
+		];
 	}
 
 	/**
@@ -130,6 +145,9 @@ class connection
 				    $status = 'unavailable';
 				}
 			} else {
+				if (!file_exists($this->local_dir)) // создаем директорию, если ее нет
+					mkdir($this->local_dir, 0777, true);
+
 				if (ftp_get($this->conn_id, $this->local_dir . basename($file), $file, FTP_BINARY)) {
 				    $status = 'downloaded';
 				} else {

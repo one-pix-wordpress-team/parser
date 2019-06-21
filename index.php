@@ -5,9 +5,9 @@
 
 require_once 'initialize.php';
 
-include 'runner.php';
+// include 'runner.php';
 
-exit;
+// exit;
 
 require_once 'header/header.php';
 ?>

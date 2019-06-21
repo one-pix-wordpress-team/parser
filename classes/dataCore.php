@@ -11,11 +11,14 @@ class dataCore
 
 	protected const DATA_DIR = 'data/';
 
-	protected $options;
+	protected $options = [
+		'download_dir' => ROOT_DIR . DIRECTORY_SEPARATOR . 'download',
+	];
 
 	protected function __construct()
 	{
-		$this->options = $this->get_data('option');
+		$options = $this->get_data('option');
+		$this->options = array_merge($this->options, $options);
 	}
 
 	/**
@@ -30,11 +33,41 @@ class dataCore
 	}
 
 	/**
-	 * Получение массива всех зарегистрированных подключений
+	 * Получить значение опции
+	 * 
+	 * @param $name string
+	 * @return mixed
 	 */
-	function get_connections()
-	{
-		# code...
+	function get_option(string $name='') {
+		if (empty($name)) {
+			return $this->options;
+		}
+		return $this->options[$name] ?? null;
+	}
+
+	/**
+	 * Задать значение опции
+	 * 
+	 * @param $name string
+	 * @param $value mixed
+	 */
+	function set_option(string $name, $value) {
+		$this->options[$name] = $value;
+	}
+
+	/**
+	 * Сохранение данных объектов
+	 * 
+	 * @param $obj object
+	 * @return bool
+	 */
+	function save_obj($obj) {
+		if (!($obj instanceof initInterface))
+			return false;
+		
+		$type = get_class($obj);
+		$data = $obj->data_to_save();
+		return $this->add_data($type, $data);
 	}
 
 	/**
@@ -45,19 +78,28 @@ class dataCore
 	 */
 	function get_all($type)
 	{
-		# code...
+		$all_data = $this->get_data($type);
+		foreach ($all_data as $data) {
+			$objs[] = $this->init_obj($type, $data);
+		}
+		
+		return $objs;
 	}
 
 	/**
 	 * Создание объектов по переданным параметрам
 	 * 
+	 * @todo выкинуть бы исключение в случае если указанный класс не корректный
 	 * @param $type string соответствующего типа
 	 * @param $data array
 	 * @return array
 	 */
 	function init_obj(string $type, array $data)
 	{
-		# code...
+		if (!is_subclass_of($type, 'MyInterface'))
+			return false;
+
+		return $type::init($data);
 	}
 
 	/**
@@ -119,15 +161,44 @@ class dataCore
 	}
 
 	/**
+	 * Добавить данные об объекте к имеющимся
+	 * 
+	 * @param $type string соответствующего типа
+	 * @param $data array
+	 * @return bool
+	 */
+	function add_data(string $type, array $new_data)
+	{
+		$data = $this->get_data($type);
+
+		$k = reset($new_data); // ключевое поле нового массива
+
+		// фильтруем данные, чтобы в файле была только одна строка с ключевым полем
+		// ключевым считается первое поле в строке
+		$data = array_filter($data, function($d) use ($k) {
+			return reset($d) != $k;
+		});
+		$data[] = $new_data;
+		return $this->set_data($type, $data);
+	}
+
+	/**
 	 * Удаление информации объектов
 	 * 
 	 * @param $type string соответствующего типа
 	 * @param $key string удаление информации конкретного объекта по ключевому полю
 	 * @return array
 	 */
-	function del_data(string $type, $key)
+	function del_data(string $type, string $key)
 	{
-		# code...
+		$data = $this->get_data($type);
+
+		// фильтруем данные, удаляя поле с ключевым полем равным указанному
+		// ключевым считается первое поле в строке
+		$data = array_filter($data, function($d) use ($key) {
+			return reset($d) != $key;
+		});
+		return $this->set_data($type, $data);
 	}
 
 	/**

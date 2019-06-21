@@ -15,14 +15,16 @@ $data = [
 	'host' => 'ftp.helmethouse.com',
 	'user' => 'datamart',
 	'pass' => 'thebest',
-	'local_dir' => ROOT_DIR . DIRECTORY_SEPARATOR . 'download',
+	//'local_dir' => ROOT_DIR . DIRECTORY_SEPARATOR . 'download',
 	'cur_files' => ['filelist.txt', 'Pricebook/changes1801.csv'], // пример нужных файлов
 ];
 
+// ?action=addItem&host=ftp.wpsstatic.com&username=wps&password=WPSftp14
+// ?action=addItem&host=ftp.helmethouse.com&username=datamart&password=thebest&path1=Pricebook/changes1801.csv
 
 $core = dataCore::instance();
 
-$core->set_data('test', [$data1]);
+$core->set_data('test', [$data]);
 
 
 echo '<pre>data: ';
