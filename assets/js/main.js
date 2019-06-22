@@ -21,13 +21,21 @@ jQuery(document).ready(function(){
       var path2 = jQuery('.inp-file-2').val();
       var path3 = jQuery('.inp-file-3').val();
       var new_item = jQuery(this).parents('.new-parser-item');
+      var button = jQuery(this).find('button');
+      alert(button.text())
       $.ajax({
           method: 'POST',
           url: '/handler.php',
-          data: { action: 'addItem', host: host , username: name, password: pass, path1: path1, path2: path2, path3: path3}
+          data: { action: 'addItem', host: host , username: name, password: pass, path1: path1, path2: path2, path3: path3},
+          beforeSend: function(){
+              button.html("<img style='height:23px;' src='//evrootel.ruhotel.su/new_1/images/loading_spinner.gif'>");
+          }
       })
+
           .success(function(data) {
+              console.log(data);
               if(data == 'true') {
+                  button.text('Connect');
                   alert("Adding a source was successful!");
                   jQuery('.items-row').append('<div class="parser-item w-100">' +
                       '<div class="row">' +
@@ -63,6 +71,7 @@ jQuery(document).ready(function(){
                   new_item.remove();
               } else {
                   alert("An error occurred! Please check your connection details!");
+                  button.text('Connect');
               }
 
           })
@@ -81,6 +90,7 @@ jQuery(document).ready(function(){
             data: { action: 'deleteItem', host: host }
         })
             .success(function(data) {
+                alert(data);
                 if(data == 'true') {
                     alert('The object was successfully deleted!');
                     here.remove();

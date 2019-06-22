@@ -7,4 +7,3 @@
 <script src="/assets/js/dry.functions.js"></script>
 <script src="/assets/js/vars.js"></script>
 <script src="/assets/js/main.js"></script>
-<script src="/inc/ajax/ajax.js"></script>

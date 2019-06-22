@@ -8,8 +8,6 @@
 
 require_once 'initialize.php';
 
-$_POST = $_GET;
-
 if(empty($_POST['action']))
 	die('go away!');
 
@@ -30,7 +28,7 @@ switch ($_POST['action']) {
 		$c = connection::init($data);
 		if ($c->get('status') == 'successfully connected') { // проверка подключения
 			$core = dataCore::instance();
-			var_dump($core->save_obj($c)); // сохранение
+            $core->save_obj($c);
 			echo 'true';
 		} else {
 			echo 'false';

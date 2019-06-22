@@ -39,7 +39,7 @@ class CSV {
             $mode = $mode ?? 'a';
             $handle = fopen($this->_csv_file, $mode);
         } else {
-            throw new File_Exception("Файл не доступен для записи", $this->_csv_file);
+            throw new fileException("Файл не доступен для записи", $this->_csv_file);
         }
 
         foreach ($csv as $line) {
