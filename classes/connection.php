@@ -139,7 +139,7 @@ class connection implements initInterface
 		foreach ($this->cur_files as $file => &$status) {
 			if ($test) {
 				$file_in_dir = ftp_nlist($this->conn_id, dirname($file));
-				if ( in_array($file, $file_in_dir) ) {
+				if ( is_array($file_in_dir) && in_array($file, $file_in_dir) ) {
 				    $status = 'available';
 				} else {
 				    $status = 'unavailable';
