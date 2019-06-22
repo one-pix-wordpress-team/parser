@@ -23,17 +23,27 @@ $data = [
 // ?action=addItem&host=ftp.helmethouse.com&username=datamart&password=thebest&path1=Pricebook/changes1801.csv
 
 $core = dataCore::instance();
+$connections = $core->get_all('connection');
 
-$core->set_data('test', [$data]);
+echo '<pre>connections: ';
+	echo "\n";
+foreach ($connections as $connection) {
+	echo $connection->get('status');
+	echo " - ";
+	echo $connection->get('host');
+	echo " [";
+	echo $connection->get('user');
+	echo ", '";
+	echo $connection->get('pass');
+	echo "']\nfiles:\n";
+	print_r($connection->get('cur_files'));
+}
 
-
-echo '<pre>data: ';
-echo "\n";
-print_r($core->get_data('test'));
 echo '</pre>';
 exit;
 
 $c = connection::init($data);
+
 
 echo '<pre>status: ';
 print_r($c->get('status'));

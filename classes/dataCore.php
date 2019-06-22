@@ -76,7 +76,7 @@ class dataCore
 	 * @param $type string соответствующего типа
 	 * @return array
 	 */
-	function get_all($type)
+	function get_all(string $type)
 	{
 		$all_data = $this->get_data($type);
 		foreach ($all_data as $data) {
@@ -96,7 +96,7 @@ class dataCore
 	 */
 	function init_obj(string $type, array $data)
 	{
-		if (!is_subclass_of($type, 'MyInterface'))
+		if (!is_subclass_of($type, 'initInterface'))
 			return false;
 
 		return $type::init($data);
