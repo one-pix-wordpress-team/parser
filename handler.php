@@ -6,7 +6,6 @@
  * @version 1.0
  */
 
-// '?action=moto_parser'
 
 add_action( 'wp_ajax_moto_parser', 'moto_parser_handler' );
 //add_action( 'wp_ajax_nopriv_moto_parser', 'moto_parser_handler' );
