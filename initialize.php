@@ -29,3 +29,4 @@ spl_autoload_register(function($class) {
 
 require_once 'inc/exceptions.php';
 require_once 'inc/initInterface.php';
+require_once 'handler.php';

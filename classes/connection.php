@@ -1,7 +1,7 @@
 <?php
 /**
  * Работа с ftp подключением
- * 
+ *
  * @package moto-parser
  * @version 1.0
  */
@@ -127,22 +127,23 @@ class connection implements initInterface
 
 	/**
 	 * получить нужные файлы с сервера
-	 * 
+	 *
 	 * @param bool $test проверить на наличие, вместо скачивания
-	 * @return bool
+	 * @return bool|array
 	 */
 	function get_files($test=false)
 	{
 		if(empty($this->conn_id))
 			return false;
 
+		$downloaded = [];
 		foreach ($this->cur_files as $file => &$status) {
 			if ($test) {
 				$file_in_dir = ftp_nlist($this->conn_id, dirname($file));
 				if ( is_array($file_in_dir) && in_array($file, $file_in_dir) ) {
 				    $status = 'available';
 				} else {
-				    $status = 'unavailable';
+				    $status = '<div class="red">unavailable</div>';
 				}
 			} else {
 				if (!file_exists($this->local_dir)) // создаем директорию, если ее нет
@@ -150,18 +151,26 @@ class connection implements initInterface
 
 				if (ftp_get($this->conn_id, $this->local_dir . basename($file), $file, FTP_BINARY)) {
 				    $status = 'downloaded';
+//				    echo $this->local_dir . basename($file);
+//				    echo "\n";
+//				    echo $file;
+                    $downloaded[] = $this->local_dir . $file;
 				} else {
-				    $status = 'download failed';
+				    $status = '<div class="red">download failed</div>';
 				}
 			}
 		}
 
-		return true;
+		if ($test) {
+            return true;
+        } else {
+            return $downloaded;
+        }
 	}
 
 	/**
 	 * лайтовый геттер
-	 * 
+	 *
 	 * @return mixed
 	 */
 	function get($name) {

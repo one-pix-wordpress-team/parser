@@ -4,7 +4,10 @@ jQuery(document).ready(function(){
 
   jQuery('.add-new-item').click(function(){
    if(jQuery('.new-parser-item').exists()){
-       alert('You should complete current new item first!');
+       jQuery('.error-message').text('You should complete current new item first!').slideDown(600);
+       setTimeout(function(){
+           jQuery('.error-message').slideUp(600);
+       }, 6000);
    } else {
        jQuery('.items-row').append(new_item);
    }
@@ -22,21 +25,24 @@ jQuery(document).ready(function(){
       var path3 = jQuery('.inp-file-3').val();
       var new_item = jQuery(this).parents('.new-parser-item');
       var button = jQuery(this).find('button');
-      alert(button.text())
-      $.ajax({
+
+      jQuery.ajax({
           method: 'POST',
-          url: '/handler.php',
-          data: { action: 'addItem', host: host , username: name, password: pass, path1: path1, path2: path2, path3: path3},
+          url: ajaxurl,
+          data: {action: 'moto_parser', pAction: 'addItem', host: host , username: name, password: pass, path1: path1, path2: path2, path3: path3},
           beforeSend: function(){
               button.html("<img style='height:23px;' src='//evrootel.ruhotel.su/new_1/images/loading_spinner.gif'>");
           }
       })
 
           .success(function(data) {
-              console.log(data);
+              alert(data);
               if(data == 'true') {
                   button.text('Connect');
-                  alert("Adding a source was successful!");
+                  jQuery('.success-message').text('The sourse was successfully connected!').slideDown(600);
+                  setTimeout(function(){
+                      jQuery('.success-message').slideUp(600);
+                  }, 6000);
                   jQuery('.items-row').append('<div class="parser-item w-100">' +
                       '<div class="row">' +
                       '<div class="col-lg-6 host-inner item-inner">'+host+'</div>' +
@@ -70,8 +76,10 @@ jQuery(document).ready(function(){
 
                   new_item.remove();
               } else {
-                  alert("An error occurred! Please check your connection details!");
-                  button.text('Connect');
+                  jQuery('.error-message').text('An error was accured. Check your connection details').slideDown(600);
+                  setTimeout(function(){
+                      jQuery('.error-message').slideUp(600);
+                  }, 6000);
               }
 
           })
@@ -84,15 +92,18 @@ jQuery(document).ready(function(){
         var host = jQuery(this).parents('.row').children('.host-inner').text();
         var here = jQuery(this).parents('.parser-item');
 
-            $.ajax({
+        jQuery.ajax({
             method: 'POST',
-            url: '/handler.php',
-            data: { action: 'deleteItem', host: host }
+            url: ajaxurl,
+            data: { action: 'moto_parser', pAction: 'deleteItem', host: host }
         })
             .success(function(data) {
-                alert(data);
+
                 if(data == 'true') {
-                    alert('The object was successfully deleted!');
+                    jQuery('.success-message').text('The object was successfully deleted').slideDown(600);
+                    setTimeout(function(){
+                        jQuery('.success-message').slideUp(600);
+                    }, 6000);
                     here.remove();
                 }
             });
@@ -102,5 +113,24 @@ jQuery('.items-row').on('click', '.item-info', function(){
 })
     jQuery('.items-row').on('click', '.close', function(){
         jQuery(this).parents('.popup-config').slideUp(200);
-    })
+    });
+    jQuery('body').on('click', '.load-docs', function(){
+        var that = jQuery('.load-docs');
+        that.text('Combining...');
+
+        jQuery.ajax({
+            method: 'POST',
+            url: ajaxurl,
+            data: { action: 'moto_parser', pAction: 'loadAndCombine' }
+        })
+            .success(function(data) {
+
+                    jQuery('.success-message').text('Combining files was successfull click button bellow to download').slideDown(600);
+                    setTimeout(function(){
+                        jQuery('.success-message').slideUp(600);
+                    }, 6000);
+                  that.html('<a style="color:white;font-weight: 700;text-decoration: none;" href="' + data + '">Download</a>');
+
+            });
+    });
 });

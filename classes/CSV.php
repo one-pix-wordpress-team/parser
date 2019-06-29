@@ -56,15 +56,19 @@ class CSV {
      * 
      * @return array|false массив строк прочитанного файла
      */
-    public function getCSV($delimiter=";") {
+    public function getCSV() {
         if (!is_writable($this->_csv_file))
             return false;
         
         $handle = fopen($this->_csv_file, "r"); //Открываем csv для чтения
 
+        if (!$handle)
+            return false;
+
         $array_line_full = [];
         //Проходим весь csv-файл, и читаем построчно
-        while ($handle && ($line = fgetcsv($handle, 0, $delimiter)) !== FALSE) {
+        while (($line = fgetcsv($handle, 0, ";")) !== FALSE && isset($line)) {
+            if ($line[0] === null) continue; // пропуск пустой строки
             $line = array_map(function($l) {
                 return json_decode($l, true) ?: $l;
             }, $line);

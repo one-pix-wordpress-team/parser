@@ -79,7 +79,7 @@ class dataCore
 	function get_all(string $type)
 	{
 		$all_data = $this->get_data($type);
-		$objs = [];
+        $objs = [];
 		foreach ($all_data as $data) {
 			$objs[] = $this->init_obj($type, $data);
 		}
