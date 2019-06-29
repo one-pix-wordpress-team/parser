@@ -9,7 +9,7 @@ class dataCore
 {
 	protected static $instance = null;
 
-	protected const DATA_DIR = 'data/';
+	protected const DATA_DIR = 'data' . DIRECTORY_SEPARATOR;
 
 	protected $options = [
 		'download_dir' => ROOT_DIR . DIRECTORY_SEPARATOR . 'download',
@@ -112,7 +112,7 @@ class dataCore
 	 */
 	function get_data(string $type, $key='')
 	{
-		$file = self::DATA_DIR . $type . '.csv';
+		$file = ROOT_DIR . DIRECTORY_SEPARATOR . self::DATA_DIR . $type . '.csv';
 		$csv = new CSV($file);
 		$data = $csv->getCSV();
 		if (!$data || count($data) < 2)
@@ -148,7 +148,7 @@ class dataCore
 		if (empty($data))
 			return false;
 
-		$file = self::DATA_DIR . $type . '.csv';
+		$file = ROOT_DIR . DIRECTORY_SEPARATOR . self::DATA_DIR . $type . '.csv';
 		$csv = new CSV($file);
 
         array_unshift($data, array_keys($data[0]));

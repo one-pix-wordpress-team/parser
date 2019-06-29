@@ -3,7 +3,7 @@
  * Работа с ftp подключением
  *
  * @package moto-parser
- * @version 1.0
+ * @version 1.1
  */
 class connection implements initInterface
 {
@@ -37,7 +37,7 @@ class connection implements initInterface
 		// $this->name = $data['name'] ?? $data['host'];
 		// $this->desc = $data['desc'] ?? '';
 
-		$this->cur_files = !empty($data['cur_files']) ? array_flip($data['cur_files']) : [];
+		$this->cur_files = !empty($data['cur_files']) && is_array($data['cur_files']) ? array_flip($data['cur_files']) : [];
 		$this->local_dir = $download_dir . DIRECTORY_SEPARATOR . $this->host . DIRECTORY_SEPARATOR;
 	}
 

@@ -3,7 +3,7 @@
  * Класс для работы с csv-файлами
  * 
  * @package moto-parser
- * @version 1.1
+ * @version 1.2
  */
 class CSV {
     private $_csv_file = null;
@@ -33,8 +33,11 @@ class CSV {
         //если указать w, то информация которая была в csv будет затёрта
         if (!file_exists($this->_csv_file)) { //Если файл не существует создаем
             $mode = $mode ?? 'w';
-            $handle = fopen($this->_csv_file, $mode);
-            fputs($handle, chr(0xEF) . chr(0xBB) . chr(0xBF)); // BOM
+            $handle = @fopen($this->_csv_file, $mode);
+            if ($handle === false) {
+                throw new fileException("Не удалось создать файл для записи", $this->_csv_file);
+            }
+            //fputs($handle, chr(0xEF) . chr(0xBB) . chr(0xBF)); // BOM
         } elseif(is_writable($this->_csv_file)) {
             $mode = $mode ?? 'a';
             $handle = fopen($this->_csv_file, $mode);
@@ -56,7 +59,7 @@ class CSV {
      * 
      * @return array|false массив строк прочитанного файла
      */
-    public function getCSV() {
+    public function getCSV($delimiter = ';') {
         if (!is_writable($this->_csv_file))
             return false;
         
@@ -67,7 +70,7 @@ class CSV {
 
         $array_line_full = [];
         //Проходим весь csv-файл, и читаем построчно
-        while (($line = fgetcsv($handle, 0, ";")) !== FALSE && isset($line)) {
+        while (($line = fgetcsv($handle, 0, $delimiter)) !== FALSE && isset($line)) {
             if ($line[0] === null) continue; // пропуск пустой строки
             $line = array_map(function($l) {
                 return json_decode($l, true) ?: $l;
