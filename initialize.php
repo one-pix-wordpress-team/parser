@@ -39,4 +39,4 @@ add_filter('admin_footer_text', function() {
 
 require_once 'inc/exceptions.php';
 require_once 'inc/initInterface.php';
-require_once 'handler.php';
+require_once 'inc/handler.php';
