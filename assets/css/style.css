@@ -117,9 +117,6 @@ font-size:24px;
     padding: 30px 0;
     border-bottom: 1px solid #ededed;
 }
-#wpcontent{
-    padding: 0;
-}
 .success-message{
     display: none;
     color:white;
@@ -135,4 +132,33 @@ font-size:24px;
     text-align: center;
     padding:30px;
     background: #dc3545;
+}
+.btn{
+    cursor:pointer;
+}
+.popup-add-files{
+    width:calc(100% - 64px);
+    height:calc(100vh - 64px);
+    top:0px;
+    left:32px;
+}
+@keyframes dance {
+    0% {
+        -webkit-transform: translateX(800%);
+        transform: translateX(800%);
+        visibility: visible;
+    }
+    100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+.preloader{
+    animation: dance 12s linear infinite;
+    position: absolute;
+    width:10%;
+    top:calc(100% + 100%);
+}
+.preloader img{
+    width:100%;
 }

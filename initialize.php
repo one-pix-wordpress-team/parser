@@ -27,6 +27,16 @@ spl_autoload_register(function($class) {
     }
 }, false);
 
+/**
+ * Некоторые настройки
+ */
+add_filter('admin_footer_text', function() {
+    $footer_text = [
+        'Спасибо за творчество с <b>BigDickDevelopers</b>'
+    ];
+    return implode( ' &amp;bull; ', $footer_text);
+});
+
 require_once 'inc/exceptions.php';
 require_once 'inc/initInterface.php';
 require_once 'handler.php';

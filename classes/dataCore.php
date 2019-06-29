@@ -3,7 +3,7 @@
  * Для работы с данными
  * 
  * @package moto-parser
- * @version 1.1
+ * @version 1.2
  */
 class dataCore
 {
@@ -74,11 +74,12 @@ class dataCore
 	 * Получение всех объектов указанного типа
 	 * 
 	 * @param $type string соответствующего типа
+	 * @param $key string получение конкретного объекта по ключевому полю
 	 * @return array
 	 */
-	function get_all(string $type)
+	function get_all(string $type, $key='')
 	{
-		$all_data = $this->get_data($type);
+		$all_data = $this->get_data($type, $key);
         $objs = [];
 		foreach ($all_data as $data) {
 			$objs[] = $this->init_obj($type, $data);
@@ -145,13 +146,12 @@ class dataCore
 	 */
 	function set_data(string $type, array $data)
 	{
-		if (empty($data))
-			return false;
+		if (!empty($data)) {
+			array_unshift($data, array_keys($data[0]));
+		}
 
 		$file = ROOT_DIR . DIRECTORY_SEPARATOR . self::DATA_DIR . $type . '.csv';
 		$csv = new CSV($file);
-
-        array_unshift($data, array_keys($data[0]));
 
         try {
             $csv->setCSV($data, 'w');
@@ -177,9 +177,10 @@ class dataCore
 		// фильтруем данные, чтобы в файле была только одна строка с ключевым полем
 		// ключевым считается первое поле в строке
 		$data = array_filter($data, function($d) use ($k) {
-			return reset($d) != $k;
+			return reset($d) !== $k;
 		});
 		$data[] = $new_data;
+		
 		return $this->set_data($type, $data);
 	}
 
@@ -197,8 +198,9 @@ class dataCore
 		// фильтруем данные, удаляя поле с ключевым полем равным указанному
 		// ключевым считается первое поле в строке
 		$data = array_filter($data, function($d) use ($key) {
-			return reset($d) != $key;
+			return reset($d) !== $key;
 		});
+
 		return $this->set_data($type, $data);
 	}
 

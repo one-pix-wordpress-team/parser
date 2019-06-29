@@ -20,23 +20,20 @@ jQuery(document).ready(function(){
       var host = jQuery('.inp-host').val();
       var name = jQuery('.inp-username').val();
       var pass = jQuery('.inp-password').val();
-      var path1 = jQuery('.inp-file-1').val();
-      var path2 = jQuery('.inp-file-2').val();
-      var path3 = jQuery('.inp-file-3').val();
       var new_item = jQuery(this).parents('.new-parser-item');
       var button = jQuery(this).find('button');
 
       jQuery.ajax({
           method: 'POST',
           url: ajaxurl,
-          data: {action: 'moto_parser', pAction: 'addItem', host: host , username: name, password: pass, path1: path1, path2: path2, path3: path3},
+          data: {action: 'moto_parser', pAction: 'addItem', host: host , username: name, password: pass},
           beforeSend: function(){
               button.html("<img style='height:23px;' src='//evrootel.ruhotel.su/new_1/images/loading_spinner.gif'>");
           }
       })
 
           .success(function(data) {
-              alert(data);
+              console.log(data);
               if(data == 'true') {
                   button.text('Connect');
                   jQuery('.success-message').text('The sourse was successfully connected!').slideDown(600);
@@ -47,12 +44,12 @@ jQuery(document).ready(function(){
                       '<div class="row">' +
                       '<div class="col-lg-6 host-inner item-inner">'+host+'</div>' +
                       '<div class="col-lg-3 item-inner" style="color:#28a745;">' +
-                      'Working' +
+                      'successfully connected' +
                       '</div>' +
                       '<div class="col-lg-3">\n' +
-                      '                    <div class="item-info btn"><i class="fa fa-eye" aria-hidden="true"></i></div><div class="remove-item btn btn-danger">-</div>\n' +
+                      '                    <div class="add-files btn"><i class="fa fa-plus" aria-hidden="true"></i></div><div class="item-info btn"><i class="fa fa-eye" aria-hidden="true"></i></div><div class="remove-item btn btn-danger">-</div>\n' +
                       '                </div>\n' +
-                      '                <div style="display:none" class="popup-config"><div class="spoiler col-lg-12">\n' +
+                      '                <div style="display:none" class="popup-config status-popup"><div class="spoiler col-lg-12">\n' +
                       '                        <div class="row">\n' +
                       '                            <div class="close"><i class="fa fa-times" aria-hidden="true"></i></div>\n' +
                       '                            <div class="popup-headers row">\n' +
@@ -64,7 +61,7 @@ jQuery(document).ready(function(){
                       '                            </div>\n' +
                       '                            </div>\n' +
                       '                            <div class="row file-row">\n' +
-                      '                                <div class="col-lg-9 host-inner item-inner">'+path1+'</div>\n' +
+                      '                                <div class="col-lg-9 host-inner item-inner"></div>\n' +
                       '                                <div class="col-lg-3 item-inner" style="color:#28a745;">\n' +
                       '                                    Working\n' +
                       '                                </div>\n' +
@@ -98,7 +95,7 @@ jQuery(document).ready(function(){
             data: { action: 'moto_parser', pAction: 'deleteItem', host: host }
         })
             .success(function(data) {
-
+                console.log(data);
                 if(data == 'true') {
                     jQuery('.success-message').text('The object was successfully deleted').slideDown(600);
                     setTimeout(function(){
@@ -109,8 +106,11 @@ jQuery(document).ready(function(){
             });
     });
 jQuery('.items-row').on('click', '.item-info', function(){
-    jQuery(this).parents('.row').children('.popup-config').slideDown(200);
+    jQuery(this).parents('.row').children('.status-popup').slideDown(200);
 })
+    jQuery('.items-row').on('click', '.add-files', function(){
+        jQuery(this).parents('.row').children('.popup-add-files').slideDown(200);
+    })
     jQuery('.items-row').on('click', '.close', function(){
         jQuery(this).parents('.popup-config').slideUp(200);
     });
@@ -124,7 +124,7 @@ jQuery('.items-row').on('click', '.item-info', function(){
             data: { action: 'moto_parser', pAction: 'loadAndCombine' }
         })
             .success(function(data) {
-
+console.log(data);
                     jQuery('.success-message').text('Combining files was successfull click button bellow to download').slideDown(600);
                     setTimeout(function(){
                         jQuery('.success-message').slideUp(600);

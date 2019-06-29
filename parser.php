@@ -50,7 +50,7 @@ require_once 'initialize.php';
                             <?= $connection->get('status'); ?>
                         </div>
                         <div class="col-lg-3">
-                            <div class="add-files"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                            <div class="add-files btn"><i class="fa fa-plus" aria-hidden="true"></i></div>
                             <div class="item-info btn"><i class="fa fa-eye" aria-hidden="true"></i></div>
                             <div class="remove-item btn btn-danger">-</div>
                         </div>
@@ -58,15 +58,29 @@ require_once 'initialize.php';
                             <div class="spoiler col-lg-12">
                                 <div class="row">
                                     <div class="close"><i class="fa fa-times" aria-hidden="true"></i></div>
-                                    <div class="popup-headers row">
+                                    <div class="row file-row">
+                                        <div class="popup-headers row">
+                                            <div class="col-lg-12 head-item">
+                                                Choose files to add/delete
+                                            </div>
 
+                                        </div>
+                                        <div class="preloader">
+                                        <img style="float:right;" src="/wp-content/plugins/moto-parser/assets/img/moonwalk.gif">
                                     </div>
+                                    </div>
+                                    <?php
+                                    $files = $connection->get('cur_files');
+                                    foreach ($files as $file_name => $status): ?>
+
+
+                                    <?php endforeach; ?>
 
 
                                 </div>
                             </div>
                         </div>
-                        <div style="display:none" class="popup-config">
+                        <div style="display:none" class="popup-config status-popup">
                             <div class="spoiler col-lg-12">
                                 <div class="row">
                                     <div class="close"><i class="fa fa-times" aria-hidden="true"></i></div>
@@ -112,3 +126,8 @@ require_once 'initialize.php';
 </div>
 
 </div>
+<style>
+    #wpcontent{
+        padding: 0;
+    }
+</style>

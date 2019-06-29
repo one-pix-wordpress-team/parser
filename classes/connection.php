@@ -3,7 +3,7 @@
  * Работа с ftp подключением
  *
  * @package moto-parser
- * @version 1.1
+ * @version 1.2
  */
 class connection implements initInterface
 {
@@ -115,14 +115,38 @@ class connection implements initInterface
 	/**
 	 * Получить список доступных файлов на сервере
 	 * 
-	 * @param str $server_dir
+	 * @param str $server_dir нужная директория
+	 * @param int $max_depth глубина прохода, при 0 только указанная директория
+	 * @param bool $show_empty показывать ли пустые папки
 	 * @return false|array
 	 */
-	function get_files_list($server_dir)
+	function get_files_list(string $server_dir = '.', $max_depth = 1, $show_empty = false)
 	{
 		if(empty($this->conn_id))
 			return false;
-		return ftp_nlist($this->conn_id, $server_dir);
+
+		static $depth = 0;
+		if ($depth > $max_depth) return [];
+		$depth++;
+
+		$list = ftp_nlist($this->conn_id, $server_dir);
+
+		$dirs = [];
+		foreach ($list as $file) {
+			if (false === strpos($file, '.')) {
+				$l = $this->get_files_list($file, $max_depth);
+				if (!empty($l) || $show_empty) {
+					$dirs[$file] = $l;
+				}
+			} else {
+				if (preg_match('/\.csv$/', $file)) {
+					$dirs[] = $file;
+				}
+			}
+		}
+
+		$depth--;
+		return $dirs;
 	}
 
 	/**
@@ -143,7 +167,7 @@ class connection implements initInterface
 				if ( is_array($file_in_dir) && in_array($file, $file_in_dir) ) {
 				    $status = 'available';
 				} else {
-				    $status = '<div class="red">unavailable</div>';
+				    $status = 'unavailable';
 				}
 			} else {
 				if (!file_exists($this->local_dir)) // создаем директорию, если ее нет
@@ -151,12 +175,9 @@ class connection implements initInterface
 
 				if (ftp_get($this->conn_id, $this->local_dir . basename($file), $file, FTP_BINARY)) {
 				    $status = 'downloaded';
-//				    echo $this->local_dir . basename($file);
-//				    echo "\n";
-//				    echo $file;
                     $downloaded[] = $this->local_dir . $file;
 				} else {
-				    $status = '<div class="red">download failed</div>';
+				    $status = 'download failed';
 				}
 			}
 		}

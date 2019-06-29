@@ -22,12 +22,7 @@ function moto_parser_handler()
                 'user' => $_POST['username'],
                 'pass' => $_POST['password'],
             ];
-            if (!empty($_POST['path1']))
-                $data['cur_files'][] = $_POST['path1'];
-            if (!empty($_POST['path2']))
-                $data['cur_files'][] = $_POST['path2'];
-            if (!empty($_POST['path3']))
-                $data['cur_files'][] = $_POST['path3'];
+            // $data['cur_files'][] = $_POST['path']; // добавление файлов
 
             $c = connection::init($data);
             if ($c->get('status') == 'successfully connected') { // проверка подключения
@@ -42,10 +37,22 @@ function moto_parser_handler()
         case 'deleteItem':
             if (!empty($_POST['host'])) {
                 $core = dataCore::instance();
-                $core->del_data('connection', $_POST['host']); // удаление подключения
-                echo 'true';
+                echo $core->del_data('connection', $_POST['host']) ? 'true' : 'false'; // удаление подключения
             } else {
                 echo 'false';
+            }
+            break;
+
+        case 'getFiles': // Запрос файлов на фтп
+            if (!empty($_POST['host'])) { // нужно передать нужный хост
+                $core = dataCore::instance();
+                $c = $core->get_all('connection', $_POST['host']);
+                $c = array_shift($c);
+                $files = $c->get_files_list();
+                print_r($files); // вместо этого следует в json запаковать
+                // echo json_encode($files); // вот! Запаковано. Просто раскомментируй
+            } else {
+                echo 'host is empty';
             }
             break;
 
