@@ -3,7 +3,7 @@
  * Для работы с данными
  * 
  * @package moto-parser
- * @version 1.0
+ * @version 1.1
  */
 class dataCore
 {
@@ -79,6 +79,7 @@ class dataCore
 	function get_all(string $type)
 	{
 		$all_data = $this->get_data($type);
+		$objs = [];
 		foreach ($all_data as $data) {
 			$objs[] = $this->init_obj($type, $data);
 		}
@@ -92,7 +93,7 @@ class dataCore
 	 * @todo выкинуть бы исключение в случае если указанный класс не корректный
 	 * @param $type string соответствующего типа
 	 * @param $data array
-	 * @return array
+	 * @return array|false
 	 */
 	function init_obj(string $type, array $data)
 	{
@@ -164,7 +165,7 @@ class dataCore
 	 * Добавить данные об объекте к имеющимся
 	 * 
 	 * @param $type string соответствующего типа
-	 * @param $data array
+	 * @param $new_data array
 	 * @return bool
 	 */
 	function add_data(string $type, array $new_data)
@@ -187,7 +188,7 @@ class dataCore
 	 * 
 	 * @param $type string соответствующего типа
 	 * @param $key string удаление информации конкретного объекта по ключевому полю
-	 * @return array
+	 * @return array|bool
 	 */
 	function del_data(string $type, string $key)
 	{

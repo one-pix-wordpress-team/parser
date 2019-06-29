@@ -9,6 +9,7 @@ $data1 = [
 	'host' => 'ftp.wpsstatic.com',
 	'user' => 'wps',
 	'pass' => 'WPSftp14',
+	'cur_files' => ['Pricing/WPS_Daily_Combined.csv'],
 ];
 
 $data = [
@@ -16,14 +17,53 @@ $data = [
 	'user' => 'datamart',
 	'pass' => 'thebest',
 	//'local_dir' => ROOT_DIR . DIRECTORY_SEPARATOR . 'download',
-	'cur_files' => ['filelist.txt', 'Pricebook/changes1801.csv'], // пример нужных файлов
+	'cur_files' => ['Pricebook/master.csv'], // пример нужных файлов
 ];
-
+$file = dataCore::instance()->get_option('download_dir') . DIRECTORY_SEPARATOR . 'ftp.helmethouse.com' . DIRECTORY_SEPARATOR . 'master.csv';
 // ?action=addItem&host=ftp.wpsstatic.com&username=wps&password=WPSftp14
 // ?action=addItem&host=ftp.helmethouse.com&username=datamart&password=thebest&path1=Pricebook/changes1801.csv
+// $c = connection::init($data);
+// var_dump($file);
+$cp = new csv_parser($file);
+$cp->headers();
+$d = $cp->content();
+echo '<pre>';
+print_r($d);
+echo '</pre>';
+exit;
 
-$core = dataCore::instance();
-$connections = $core->get_all('connection');
+$csv = new CSV($file);
+$content = $csv->getCSV(',');
+// exit;
+
+$fs = [
+	'Part Number',
+	'Alt Part#',
+	'Description',
+	'Dealer',
+	'rEtail',
+	'WEST',
+	'East',
+	'Status',
+	'MAPP Y/N',
+	'MAPP Price',
+	'Weight',
+	'Length',
+	'Width',
+	'Писка'
+];
+foreach ($content[0] as $name) {
+	if (($f = field::is_field($name)) !== false) {
+		echo "<p style=\"color:blue\">$f</p>";
+	} else {
+		echo "<p style=\"color:red\">NO</p>";
+	}
+}
+exit;
+
+// $core = dataCore::instance();
+// $connections = $core->get_all('connection');
+$file = dataCore::instance()->get_option('download_dir') . DIRECTORY_SEPARATOR . 'ftp.helmethouse.com' . DIRECTORY_SEPARATOR . 'master.csv';
 
 echo '<pre>connections: ';
 	echo "\n";

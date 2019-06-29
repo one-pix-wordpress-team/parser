@@ -3,7 +3,7 @@
  * Класс для работы с csv-файлами
  * 
  * @package moto-parser
- * @version 1.0
+ * @version 1.1
  */
 class CSV {
     private $_csv_file = null;
@@ -54,9 +54,9 @@ class CSV {
     /**
      * Чтение из csv-файла. Возвращает массив с данными из csv
      * 
-     * @return array массив строк прочитанного файла
+     * @return array|false массив строк прочитанного файла
      */
-    public function getCSV() {
+    public function getCSV($delimiter=";") {
         if (!is_writable($this->_csv_file))
             return false;
         
@@ -64,7 +64,7 @@ class CSV {
 
         $array_line_full = [];
         //Проходим весь csv-файл, и читаем построчно
-        while ($handle && ($line = fgetcsv($handle, 0, ";")) !== FALSE) {
+        while ($handle && ($line = fgetcsv($handle, 0, $delimiter)) !== FALSE) {
             $line = array_map(function($l) {
                 return json_decode($l, true) ?: $l;
             }, $line);
