@@ -43,14 +43,39 @@ function moto_parser_handler()
             }
             break;
 
-        case 'getFiles': // Запрос файлов на фтп
-            if (!empty($_POST['host'])) { // нужно передать нужный хост
+        case 'getFiles':
+            if (!empty($_POST['host'])) {
                 $core = dataCore::instance();
                 $c = $core->get_all('connection', $_POST['host']);
                 $c = array_shift($c);
-                $files = $c->get_files_list();
-                print_r($files); // вместо этого следует в json запаковать
-                // echo json_encode($files); // вот! Запаковано. Просто раскомментируй
+                if ($c) {
+                    $files = $c->get_files_list();
+                    echo json_encode($files);
+                } else {
+                    echo 'host err';
+                }
+            } else {
+                echo 'host is empty';
+            }
+            break;
+
+        case 'acceptFiles':
+            if (!empty($_POST['host'])) {
+                $files = json_decode(stripcslashes($_POST['files']), true);
+                if (null === $files) {
+                    echo 'files err';
+                    break;
+                }
+                $files = $files ? array_keys($files) : [];
+                $core = dataCore::instance();
+                $c = $core->get_all('connection', $_POST['host']);
+                $c = array_shift($c);
+                if ($c) {
+                    $c->set_cur_files($files);
+                    echo $core->save_obj($c) ? 'true' : 'false';
+                } else {
+                    echo 'host err';
+                }
             } else {
                 echo 'host is empty';
             }
@@ -70,7 +95,6 @@ function moto_parser_handler()
             } else {
                 echo 'false';
             }
-
             break;
 
         default:

@@ -3,7 +3,7 @@
  * Работа с ftp подключением
  *
  * @package moto-parser
- * @version 1.2
+ * @version 1.3
  */
 class connection implements initInterface
 {
@@ -187,6 +187,24 @@ class connection implements initInterface
         } else {
             return $downloaded;
         }
+	}
+
+	/**
+	 * устанавливает актуальные файлы для подключения
+	 *
+	 * @param array $files
+	 * @param bool $add добавить файлы вместо затирания
+	 * @return bool
+	 */
+	function set_cur_files(array $files, $add=false)
+	{
+		if ($add) {
+			$this->cur_files = array_merge($this->cur_files, array_flip($files));
+		} else {
+			$this->cur_files = array_flip($files);
+		}
+
+		return true;
 	}
 
 	/**
