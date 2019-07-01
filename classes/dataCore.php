@@ -3,7 +3,7 @@
  * Для работы с данными
  * 
  * @package moto-parser
- * @version 1.2
+ * @version 1.3
  */
 class dataCore
 {
@@ -147,7 +147,7 @@ class dataCore
 	function set_data(string $type, array $data)
 	{
 		if (!empty($data)) {
-			array_unshift($data, array_keys($data[0]));
+			array_unshift($data, array_keys(reset($data)));
 		}
 
 		$file = ROOT_DIR . DIRECTORY_SEPARATOR . self::DATA_DIR . $type . '.csv';

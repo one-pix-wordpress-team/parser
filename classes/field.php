@@ -3,7 +3,7 @@
  * Распознаваемое поле (атрибут) товара
  * 
  * @package moto-parser
- * @version 1.0
+ * @version 1.0.1
  */
 class field
 {
@@ -13,7 +13,7 @@ class field
 	protected $field;
 
 	/**
-	 * @var str значение поля
+	 * @var string значение поля
 	 */
 	protected $value;
 
@@ -182,7 +182,7 @@ class field
 	 * Инициализация поля
 	 * 
 	 * @param array $data
-	 * @return object field
+	 * @return object|false
 	 */
 	static function init($data)
 	{
@@ -207,7 +207,7 @@ class field
 	static function is_field($name)
 	{
 		foreach (self::AVAILABLE_FIELDS as $field => $value)
-			if(stripos($name, $value['name']) !== false)
+			if(stripos($name, $value['name']) === 0)
 				return $field;
 
 		return false;

@@ -3,7 +3,7 @@
  * Работа с ftp подключением
  *
  * @package moto-parser
- * @version 1.3
+ * @version 1.4
  */
 class connection implements initInterface
 {
@@ -115,7 +115,7 @@ class connection implements initInterface
 	/**
 	 * Получить список доступных файлов на сервере
 	 * 
-	 * @param str $server_dir нужная директория
+	 * @param string $server_dir нужная директория
 	 * @param int $max_depth глубина прохода, при 0 только указанная директория
 	 * @param bool $show_empty показывать ли пустые папки
 	 * @return false|array
@@ -175,7 +175,7 @@ class connection implements initInterface
 
 				if (ftp_get($this->conn_id, $this->local_dir . basename($file), $file, FTP_BINARY)) {
 				    $status = 'downloaded';
-                    $downloaded[] = $this->local_dir . $file;
+                    $downloaded[] = $this->local_dir . basename($file);
 				} else {
 				    $status = 'download failed';
 				}
@@ -210,7 +210,8 @@ class connection implements initInterface
 	/**
 	 * лайтовый геттер
 	 *
-	 * @return mixed
+     * @param string $name
+     * @return mixed
 	 */
 	function get($name) {
 		return $this->$name;

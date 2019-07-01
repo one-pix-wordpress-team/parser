@@ -2,7 +2,7 @@ jQuery(document).ready(function(){
 
     //Adding new item form
 
-  jQuery('.add-new-item').click(function(){
+jQuery('.add-new-item').click(function(){
    if(jQuery('.new-parser-item').exists()){
        jQuery('.error-message').text('You should complete current new item first!').slideDown(600);
        setTimeout(function(){
@@ -108,20 +108,104 @@ jQuery(document).ready(function(){
 jQuery('.items-row').on('click', '.item-info', function(){
     jQuery(this).parents('.row').children('.status-popup').slideDown(200);
 })
+
+
     jQuery('.items-row').on('click', '.add-files', function(){
-        jQuery(this).parents('.row').children('.popup-add-files').slideDown(200);
-    })
+
+        function dancingLikeVanDamme(min, max) {
+            var rand = min + Math.random() * (max + 1 - min);
+            rand = Math.floor(rand);
+            return rand;
+        }
+
+        var vanDamme = dancingLikeVanDamme(1, 8);
+        console.log(vanDamme);
+        var host = jQuery(this).parents('.row').children('.host-inner').text();
+        var popup = jQuery(this).parents('.row').children('.popup-add-files');
+        popup.find('.add-files-inner').html('');
+
+            popup.find('.add-files-inner').html('<div class="preloader"><img style="float:right;" src="/wp-content/plugins/moto-parser/assets/img/dance_' + vanDamme + '.gif"></div>');
+
+        popup.slideDown(200);
+        jQuery.ajax({
+            method: 'POST',
+            url: ajaxurl,
+            data: {action: 'moto_parser', pAction: 'getFiles', host: host},
+            beforeSend: function(){
+                console.log('Go');
+
+            }
+        })
+            .success(function(data) {
+
+                var arr = JSON.parse(data);
+
+                for (var k in arr) {
+console.log(typeof k);
+
+                        popup.find('.add-files-inner').append('<details class="wow-details col-lg-12 ' + k + '"><summary>' + k + '</summary></details>');
+
+                        var a = arr[k];
+                        for (var i = 0; i < a.length; ++i) {
+                            popup.find('.' + k).append('<label class="col-lg-4 wow-details-item"><input name="' + a[i] + '" type="checkbox">' + a[i] + '</label>');
+
+                        }
+
+
+                }
+                popup.find('.add-files-inner').append('<button type="submit" style="padding:15px;margin-top:15px;" class="save-files btn btn-primary col-lg-3">Save</button>');
+                popup.find('.preloader').html('');
+            })
+    });
+
+    jQuery('.accept-files').on('submit', function(s){
+        s.preventDefault();
+        var that = jQuery(this);
+        let formData = new FormData(s.target);
+
+        // Собираем данные формы в объект
+        let obj = {};
+        formData.forEach((value, key) => obj[key] = value);
+        var files = JSON.stringify(obj);
+        var host = that.parents('.parser-item').find('.host-inner').text();
+        console.log(files);
+        console.log(host);
+        jQuery.ajax({
+            method: 'POST',
+            url: ajaxurl,
+            data: {action: 'moto_parser', pAction: 'acceptFiles', host: host, files: files}
+
+        })
+            .success(function(data) {
+                if (data == 'true') {
+                    that.find('.btn').removeClass('btn-primary').addClass('btn-success').text('Successfully saved');
+                    setTimeout(function () {
+                        that.find('.btn').removeClass('btn-success').addClass('btn-primary').text('Save');
+                    }, 5000)
+                } else {
+                    that.find('.btn').removeClass('btn-primary').addClass('btn-danger').text('An error was accured!');
+                    setTimeout(function () {
+                        that.find('.btn').removeClass('btn-danger').addClass('btn-primary').text('Save');
+                    }, 5000)
+                }
+            })
+    });
+
     jQuery('.items-row').on('click', '.close', function(){
         jQuery(this).parents('.popup-config').slideUp(200);
     });
     jQuery('body').on('click', '.load-docs', function(){
         var that = jQuery('.load-docs');
-        that.text('Combining...');
+        that.removeClass('load-docs').addClass('generating-docs');
+
 
         jQuery.ajax({
             method: 'POST',
             url: ajaxurl,
-            data: { action: 'moto_parser', pAction: 'loadAndCombine' }
+            data: { action: 'moto_parser', pAction: 'loadAndCombine' },
+            beforeSend: function(){
+                that.text('Combining...');
+            }
         })
             .success(function(data) {
 console.log(data);
@@ -129,7 +213,7 @@ console.log(data);
                     setTimeout(function(){
                         jQuery('.success-message').slideUp(600);
                     }, 6000);
-                  that.html('<a style="color:white;font-weight: 700;text-decoration: none;" href="' + data + '">Download</a>');
+                  jQuery('.generating-docs').html('<a style="color:white;font-weight: 700;text-decoration: none;" href="' + data + '">Download</a>');
 
             });
     });

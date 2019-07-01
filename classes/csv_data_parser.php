@@ -1,15 +1,34 @@
 <?php
 /**
- * Получение данных из файла для добавления информации к БД
+ * Получение данных из файлов для добавления информации к БД
  * 
  * @package moto-parser
  * @version 1.0
  */
 class csv_data_parser
 {
-	function __construct() {}
+    protected $files = [];
+    protected $main_data = [];
 
-	function file_get_content($file)
+	function __construct(array $files) {
+        $this->files = $files;
+    }
+
+    function run() {
+	    foreach ($this->files as $file) {
+	        $file_content = $this->get_file_content($file);
+            $file_data = $this->get_data($file_content);
+            if (empty($this->main_data)) {
+                $this->main_data = $file_data;
+            } else {
+                $this->main_data = $this->merge($this->main_data, $file_data);
+            }
+        }
+
+	    return $this->main_data;
+    }
+
+	function get_file_content($file)
 	{
 		$csv = new CSV($file);
 		$content = $csv->getCSV(',');
@@ -29,7 +48,6 @@ class csv_data_parser
 
 		// перебираем файл доставая значения только из нужных полей
 		$data = [];
-		$j = 0;
 		foreach ($file_content as $row_no => $row) {
 			if ($row_no === 0) continue;
 
@@ -43,15 +61,17 @@ class csv_data_parser
 			// 	]);
 			// }, $row, array_keys($row));
 
+            $row_data = [];
 			foreach ($row as $col_no => $value) {
 				if ($signature[$col_no] !== false) {
 					$row_data[$col_no] = $value;
 				}
 			}
-			$data[] = $row_data;
-			if ($j++ > 10) {
-				break;
-			}
+			if (!empty($row_data))
+			    $data[] = $row_data;
+//			if ($j++ > 3) {
+//				break;
+//			}
 		}
 		$signature = array_filter($signature, function($s) { return $s !== false; }); // оставляем только допустимые поля
 
@@ -65,6 +85,43 @@ class csv_data_parser
 		$new_signature = $new_d[0];
 		$new_data = $new_d[1];
 
+		foreach ($new_data as $new_row) { // перебираем новые данные
 
+            $line = array_pad([], count($signature), ''); // пустая строка, которая будет заполняться данными
+		    foreach ($new_row as $new_no_col => $new_col) { // перебираем поля новой строки
+		        $type = $new_signature[$new_no_col]; // тип поля
+		        if (($no_col = array_search($type, $signature)) === false) { // имеется ли колонка этого типа в общем массиве
+                    $no_col = array_push($signature, $type)-1; // добавим, если нет
+                }
+                $line[$no_col] = $new_col;
+            }
+            $data[] = $line;
+
+        }
+
+		$count = count($signature);
+        $data = array_map(function ($a) use ($count) {
+            return array_pad($a, $count, '');
+        }, $data); // дополнить строки данных пустыми полями, чтобы длинна была одинаковой
+
+        return [$signature, $data];
 	}
+
+	function put_csv($file) {
+	    if (empty($this->main_data))
+	        return false;
+
+        $head = [];
+        foreach ($this->main_data[0] as $no) {
+            $head[] = field::AVAILABLE_FIELDS[$no]['name'];
+        }
+
+        $content = $this->main_data[1];
+        array_unshift($content, $head);
+
+        $csv = new CSV($file);
+        $csv->setCSV($content, null, ',');
+
+        return true;
+    }
 }

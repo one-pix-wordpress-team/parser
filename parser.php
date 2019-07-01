@@ -65,20 +65,22 @@ require_once 'initialize.php';
                                             </div>
 
                                         </div>
-                                        <div class="preloader">
-                                        <img style="float:right;" src="/wp-content/plugins/moto-parser/assets/img/moonwalk.gif">
+                                        <div class="container">
+                                            <form class="accept-files">
+                                            <div class="row add-files-inner">
+
+                                                <div class="preloader">
+
+                                                </div>
+
+                                            </div>
+                                            </form>
+                                        </div>
                                     </div>
-                                    </div>
-                                    <?php
-                                    $files = $connection->get('cur_files');
-                                    foreach ($files as $file_name => $status): ?>
-
-
-                                    <?php endforeach; ?>
-
 
                                 </div>
                             </div>
+
                         </div>
                         <div style="display:none" class="popup-config status-popup">
                             <div class="spoiler col-lg-12">
@@ -98,7 +100,7 @@ require_once 'initialize.php';
 
                                         <div class="row file-row">
 
-                                            <div class="col-lg-9 host-inner item-inner"><?= $file_name ?></div>
+                                            <div class="col-lg-9 item-inner"><?= $file_name ?></div>
                                             <div class="col-lg-3 item-inner" style="color:#28a745;">
                                                 <?= $status ?>
                                             </div>

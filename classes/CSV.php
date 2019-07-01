@@ -3,7 +3,7 @@
  * Класс для работы с csv-файлами
  * 
  * @package moto-parser
- * @version 1.2
+ * @version 1.3
  */
 class CSV {
     private $_csv_file = null;
@@ -26,9 +26,10 @@ class CSV {
      * Запись файла
      * 
      * @param array $csv массив строк будущего файла
-     * @param str $mode модификатор доступа к файлу
+     * @param string $mode модификатор доступа к файлу
+     * @param string $delimiter
      */
-    public function setCSV(Array $csv, $mode=null) {
+    public function setCSV(Array $csv, $mode=null, $delimiter = ';') {
         //Открываем csv для до-записи,
         //если указать w, то информация которая была в csv будет затёрта
         if (!file_exists($this->_csv_file)) { //Если файл не существует создаем
@@ -49,14 +50,15 @@ class CSV {
             $line = array_map(function($l) {
                 return is_array($l) ? json_encode($l) : $l;
             }, $line);
-            fputcsv($handle, $line, ";");
+            fputcsv($handle, $line, $delimiter);
         }
         fclose($handle);
     }
 
     /**
      * Чтение из csv-файла. Возвращает массив с данными из csv
-     * 
+     *
+     * @param string $delimiter
      * @return array|false массив строк прочитанного файла
      */
     public function getCSV($delimiter = ';') {
