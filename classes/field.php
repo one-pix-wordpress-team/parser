@@ -21,9 +21,10 @@ class field
 	 * Интерпретация типов
 	 */
 	const TYPES = [
-		'dynamic', // регулярно обновляемое значение
-		'static',  // значение не изменяется на регулярной основе
-		'key',     // ключевое поле
+		'simple_dynamic',// регулярно обновляемое значение (Если уже есть, то перезаписывает старое значение)
+		'simple_static', // значение не изменяется на регулярной основе (Пропускается, если уже есть)
+		'key',           // ключевое поле (Используется для поиска похожей записи)
+        'by_realer',     // поле зависящее от поставщика
 	];
 
 	/**
@@ -46,37 +47,37 @@ class field
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 3,
 			'name'  => 'Dealer',
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 3,
 			'name'  => 'Retail',
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 3,
 			'name'  => 'West',
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 3,
 			'name'  => 'East',
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 3,
 			'name'  => 'Status',
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 3,
 			'name'  => 'MAPP Y/N',
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 3,
 			'name'  => 'MAPP Price',
 			'regex' => '',
 		],
@@ -106,12 +107,12 @@ class field
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 1,
 			'name'  => 'Brand',
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 1,
 			'name'  => 'Photo',
 			'regex' => '',
 		],
@@ -121,7 +122,7 @@ class field
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 3,
 			'name'  => 'Catalog Page',
 			'regex' => '',
 		],
@@ -131,7 +132,7 @@ class field
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 3,
 			'name'  => 'Color',
 			'regex' => '',
 		],
@@ -146,27 +147,27 @@ class field
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 1,
 			'name'  => 'Alt Photos',
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 1,
 			'name'  => 'Category',
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 1,
 			'name'  => 'Class',
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 3,
 			'name'  => 'TTL Qty',
 			'regex' => '',
 		],
 		[
-			'type'  => 0,
+			'type'  => 3,
 			'name'  => 'Feature Text File',
 			'regex' => '',
 		],
@@ -202,11 +203,13 @@ class field
 	 * Проверить зарегистрировано ли поле
 	 * 
 	 * @param string $name название поля
-	 * @return int|false ключ зарегистрированного поля
+     * @param array $available_fields производить поиск по собственному списку полей
+     * @return int|false ключ зарегистрированного поля
 	 */
-	static function is_field($name)
+	static function is_field($name, $available_fields=null)
 	{
-		foreach (self::AVAILABLE_FIELDS as $field => $value)
+        $available_fields = $available_fields ?? self::AVAILABLE_FIELDS;
+		foreach ($available_fields as $field => $value)
 			if(stripos($name, $value['name']) === 0)
 				return $field;
 

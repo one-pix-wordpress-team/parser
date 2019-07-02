@@ -29,7 +29,7 @@ class CSV {
      * @param string $mode модификатор доступа к файлу
      * @param string $delimiter
      */
-    public function setCSV(Array $csv, $mode=null, $delimiter = ';') {
+    public function setCSV(array $csv, $mode=null, $delimiter = ';') {
         //Открываем csv для до-записи,
         //если указать w, то информация которая была в csv будет затёрта
         if (!file_exists($this->_csv_file)) { //Если файл не существует создаем
