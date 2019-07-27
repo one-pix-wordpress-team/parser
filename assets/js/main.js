@@ -160,7 +160,9 @@ console.log(typeof k);
 
     jQuery('.accept-files').on('submit', function(s){
         s.preventDefault();
+        var button = jQuery(this).find('button');
         var that = jQuery(this);
+        var popup = jQuery(this).parents('.row').children('.popup-add-files');
         let formData = new FormData(s.target);
 
         // Собираем данные формы в объект
@@ -173,23 +175,106 @@ console.log(typeof k);
         jQuery.ajax({
             method: 'POST',
             url: ajaxurl,
-            data: {action: 'moto_parser', pAction: 'acceptFiles', host: host, files: files}
+            data: {action: 'moto_parser', pAction: 'acceptFiles', host: host, files: files},
+            beforeSend: function(){
+                button.html("<img style='height:23px;' src='//evrootel.ruhotel.su/new_1/images/loading_spinner.gif'>");
+            }
 
         })
             .success(function(data) {
-                if (data == 'true') {
-                    that.find('.btn').removeClass('btn-primary').addClass('btn-success').text('Successfully saved');
-                    setTimeout(function () {
-                        that.find('.btn').removeClass('btn-success').addClass('btn-primary').text('Save');
-                    }, 5000)
-                } else {
-                    that.find('.btn').removeClass('btn-primary').addClass('btn-danger').text('An error was accured!');
-                    setTimeout(function () {
-                        that.find('.btn').removeClass('btn-danger').addClass('btn-primary').text('Save');
-                    }, 5000)
+                 console.log(data)
+                // if (data == 'true') {
+                //     that.find('.btn').removeClass('btn-primary').addClass('btn-success').text('Successfully saved');
+                //     setTimeout(function () {
+                //         that.find('.btn').removeClass('btn-success').addClass('btn-primary').text('Save');
+                //     }, 5000)
+                // } else {
+                //     that.find('.btn').removeClass('btn-primary').addClass('btn-danger').text('An error was accured!');
+                //     setTimeout(function () {
+                //         that.find('.btn').removeClass('btn-danger').addClass('btn-primary').text('Save');
+                //     }, 5000)
+                // }
+                popup.find('.add-files-inner').html('');
+                var arr = JSON.parse(data);
+                var select = '<select style="padding:15px; height: 52px;" class="static_fields col-lg-6"></select>'
+                popup.find('form').remove();
+                popup.find('.file-row').children('.container').html('<form class="file-fields"><div class="row add-files-inner"></div></form>')
+                   for (var k in arr) {
+                    if (k == 'files_fields') {
+                        console.log(k);
+                        var a = arr[k];
+                        for (var i = 0; i < a.length; ++i) {
+                            console.log(a[i])
+
+                            popup.find('.add-files-inner').append('<div style="padding:15px" class="file_fields-row w-100 row"><div class="col-lg-6 file_field">' + a[i] + '</div>' + select + '</div>');
+
+                        }
+                    }
                 }
+                for (var k in arr) {
+                    if (k == 'static_fields') {
+                        
+                        console.log(k);
+                        popup.find('.static_fields').append('<option name="">Nothing</option>');
+                        var a = arr[k];
+                        for (var i = 0; i < a.length; ++i) {
+                            console.log(a[i])
+
+                            popup.find('.static_fields').append('<option name="' + a[i] + '">' + a[i] + '</option>');
+
+                        }
+                    }
+                    popup.find('.file_fields-row').each(function(){
+                        var name = jQuery(this).find('.file_field').text()
+                        jQuery(this).find('select').attr('name', name)
+                    })
+
+                        // popup.find('.add-files-inner').append('<details class="wow-details col-lg-12 ' + k + '"><summary>' + k + '</summary></details>');
+                        // var a = arr[k];
+                        // for (var i = 0; i < a.length; ++i) {
+                        //     popup.find('.' + k).append('<label class="col-lg-4 wow-details-item"><input name="' + a[i] + '" type="checkbox">' + a[i] + '</label>');
+
+                       // }
+
+
+                }
+                popup.find('.add-files-inner').append('<button type="submit" style="padding:15px;margin-top:15px;" class="save-files-fields btn btn-primary col-lg-3">Save</button>');
+
+
             })
-    });
+    })
+
+    jQuery('body').on('submit', '.file-fields', function(r) {
+        r.preventDefault();
+        var button = jQuery(this).find('button');
+        var that = jQuery(this);
+        var popup = jQuery(this).parents('.row').children('.popup-add-files');
+        let formData = new FormData(r.target);
+
+        // Собираем данные формы в объект
+        let obj = {};
+        formData.forEach((value, key) => obj[key] = value);
+        var files = JSON.stringify(obj);
+        var host = that.parents('.parser-item').find('.host-inner').text();
+        console.log(files);
+        console.log(host);
+        jQuery.ajax({
+            method: 'POST',
+            url: ajaxurl,
+            data: {action: 'moto_parser', pAction: 'setFilesFields', host: host, files_fields: files},
+            beforeSend: function(){
+                button.html("<img style='height:23px;' src='//evrootel.ruhotel.su/new_1/images/loading_spinner.gif'>");
+            }
+        })
+            .success(function (data) {
+                console.log(data)
+                button.html('Saved');
+                setTimeout(function(){
+                    that.parents('.popup-config').find('.close').click();
+                }, 2500)
+
+            })
+    })
 
     jQuery('.items-row').on('click', '.close', function(){
         jQuery(this).parents('.popup-config').slideUp(200);

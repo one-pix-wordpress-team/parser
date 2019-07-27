@@ -32,7 +32,7 @@ spl_autoload_register(function($class) {
  */
 add_filter('admin_footer_text', function() {
     $footer_text = [
-        'Спасибо за творчество с <b>BigDickDevelopers</b>'
+        'Спасибо за творчество с <b>BD Developers</b>'
     ];
     return implode( ' &amp;bull; ', $footer_text);
 });

@@ -71,10 +71,53 @@ function moto_parser_handler()
                 $c = $core->get_all('connection', $_POST['host']);
                 $c = array_shift($c);
                 if ($c) {
-                    $c->set_cur_files($files);
-                    echo $core->save_obj($c) ? 'true' : 'false';
+                    $c->set_cur_files($files); // добавляем список файлов
+                    $files = $c->get_files(); // список скачанных файлов
+
+                    $headers = [];
+                    foreach ($files as $file) {
+                        $csv = new CSV($file);
+                        $h = $csv->getCSV(',');
+                        if (count($h) < 1)
+                            continue;
+                        $h = array_shift($h);
+                        if (is_array($h))
+                            $headers = array_merge($headers, $h);
+                    }
+                    $headers = array_unique($headers);
+                    $h = array_map(function ($f){
+                        return $f['name'];
+                    }, field::AVAILABLE_FIELDS);
+                    $resp = ['static_fields' => $h, 'files_fields' => $headers];
+
+                    if ($core->save_obj($c)) {
+                        echo json_encode($resp);
+                    } else {
+                        echo 'false';
+                    }
                 } else {
                     echo 'host err';
+                }
+            } else {
+                echo 'host is empty';
+            }
+            break;
+
+        case 'setFilesFields': // добавление соотношений для полей файлов
+            if (!empty($_POST['host'])) {
+                if (isset($_POST['files_fields'])) { // здесь должен быть массив соотношений
+                    $files_fields = json_decode(stripcslashes($_POST['files_fields']), true);
+                    if (null === $files_fields || !is_array($files_fields)) {
+                        echo 'files fields err';
+                        break;
+                    }
+                    $core = dataCore::instance();
+                    $c = $core->get_all('connection', $_POST['host']);
+                    $c = array_shift($c);
+                    $c->set('files_fields', $files_fields);
+                    echo $core->save_obj($c) ? 'true' : 'false';
+                } else {
+                    echo 'files fields is not exist';
                 }
             } else {
                 echo 'host is empty';

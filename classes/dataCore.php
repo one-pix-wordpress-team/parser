@@ -3,7 +3,7 @@
  * Для работы с данными
  * 
  * @package moto-parser
- * @version 1.3
+ * @version 1.4
  */
 class dataCore
 {
@@ -15,7 +15,9 @@ class dataCore
 		'download_dir' => ROOT_DIR . DIRECTORY_SEPARATOR . 'download',
 	];
 
-	protected function __construct()
+    protected $cash;
+
+    protected function __construct()
 	{
 		$options = $this->get_data('option');
 		$this->options = array_merge($this->options, $options);
@@ -31,6 +33,24 @@ class dataCore
 
 		return self::$instance;
 	}
+
+    /**
+     * @param string $name
+     * @param $value
+     */
+	function set_cash(string $name, $value)
+    {
+        $this->cash[$name] = $value;
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    function get_cash(string $name)
+    {
+        return $this->cash[$name] ?? null;
+    }
 
 	/**
 	 * Получить значение опции

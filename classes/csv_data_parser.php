@@ -3,13 +3,14 @@
  * Получение данных из файлов для добавления информации к БД
  * 
  * @package moto-parser
- * @version 1.1
+ * @version 1.2
  */
 class csv_data_parser
 {
     protected $files = [];
     protected $main_data = [];
     protected $available_fields = [];
+    protected $header_rules = [];
 
     protected $cur_file; // текущий обрабатываемый файл
     protected $distributor; // поставщик обрабатываемого файла
@@ -17,11 +18,37 @@ class csv_data_parser
 	function __construct(array $files)
     {
         $this->files = $files;
-        $this->available_fields = field::AVAILABLE_FIELDS;
+
+        $available_fields = field::AVAILABLE_FIELDS;
+        $core = dataCore::instance();
+
+        $header_rules = $core->get_cash('header_rules');
+//        $header_rules = [
+//            'Part #' => 'Part Number',
+//            'Dealer' => 'Dealer',
+//            'UPC' => 'UPC',
+//        ];
+
+        $header_rules = array_map(function($n) use ($available_fields){
+            foreach($available_fields as $k => $v) {
+                if ($v['name'] == $n)
+                    return $k;
+            }
+            return false;
+        }, $header_rules);
+
+        $this->header_rules = array_filter($header_rules, function($n) {
+            return false !== $n;
+        });
+
+        $this->available_fields = $available_fields;
     }
 
     function run()
     {
+        if (empty($this->header_rules))
+            return 'header rules is empty';
+
 	    foreach ($this->files as $file) {
             $this->cur_file = $file;
             /**
@@ -45,12 +72,14 @@ class csv_data_parser
 	{
 		$csv = new CSV($file);
 		$content = $csv->getCSV(',');
-        $content = array_slice($content, 0, 1001); // ради теста. Не берем бесконечные файлы, а берем только первые 1001 строк
+//        $content = array_slice($content, 0, 1001); // ради теста. Не берем бесконечные файлы, а берем только первые 1001 строк
 		return $content;
 	}
 
 	function is_field($s_name) {
-        if (($field = field::is_field($s_name, $this->available_fields)) !== false) {
+//        if (($field = field::is_field($s_name, $this->available_fields)) !== false) {
+        $field = $this->header_rules[$s_name] ?? false;
+        if ($field !== false) {
             if ($this->available_fields[$field]['type'] == 3) { // если поле зависит от поставщика, создаем под него отдельный временный тип
                 $new_name = $this->distributor . '_' . $this->available_fields[$field]['name'];
                 if (($new_field = field::is_field($new_name, $this->available_fields)) !== false) { // не создан ли уже отдельный тип

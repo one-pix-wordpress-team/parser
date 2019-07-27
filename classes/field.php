@@ -30,148 +30,290 @@ class field
 	/**
 	 * Данные зарегистрированных полей
 	 */
-	const AVAILABLE_FIELDS = [
-		[
-			'type'  => 2,
-			'name'  => 'Part Number',
-			'regex' => '',
-		],
-		[
-			'type'  => 0,
-			'name'  => 'Alt Part#',
-			'regex' => '',
-		],
-		[
-			'type'  => 0,
-			'name'  => 'Description',
-			'regex' => '',
-		],
-		[
-			'type'  => 3,
-			'name'  => 'Dealer',
-			'regex' => '',
-		],
-		[
-			'type'  => 3,
-			'name'  => 'Retail',
-			'regex' => '',
-		],
-		[
-			'type'  => 3,
-			'name'  => 'West',
-			'regex' => '',
-		],
-		[
-			'type'  => 3,
-			'name'  => 'East',
-			'regex' => '',
-		],
-		[
-			'type'  => 3,
-			'name'  => 'Status',
-			'regex' => '',
-		],
-		[
-			'type'  => 3,
-			'name'  => 'MAPP Y/N',
-			'regex' => '',
-		],
-		[
-			'type'  => 3,
-			'name'  => 'MAPP Price',
-			'regex' => '',
-		],
-		[
-			'type'  => 0,
-			'name'  => 'Weight (Oz)',
-			'regex' => '',
-		],
-		[
-			'type'  => 0,
-			'name'  => 'Length',
-			'regex' => '',
-		],
-		[
-			'type'  => 0,
-			'name'  => 'Width',
-			'regex' => '',
-		],
-		[
-			'type'  => 0,
-			'name'  => 'Depth',
-			'regex' => '',
-		],
-		[
-			'type'  => 0,
-			'name'  => 'Long Description',
-			'regex' => '',
-		],
-		[
-			'type'  => 1,
-			'name'  => 'Brand',
-			'regex' => '',
-		],
-		[
-			'type'  => 1,
-			'name'  => 'Photo',
-			'regex' => '',
-		],
-		[
-			'type'  => 2,
-			'name'  => 'UPC',
-			'regex' => '',
-		],
-		[
-			'type'  => 3,
-			'name'  => 'Catalog Page',
-			'regex' => '',
-		],
-		[
-			'type'  => 0,
-			'name'  => 'Size',
-			'regex' => '',
-		],
-		[
-			'type'  => 3,
-			'name'  => 'Color',
-			'regex' => '',
-		],
-		[
-			'type'  => 0,
-			'name'  => 'Model',
-			'regex' => '',
-		],
-		[
-			'type'  => 0,
-			'name'  => 'Origin',
-			'regex' => '',
-		],
-		[
-			'type'  => 1,
-			'name'  => 'Alt Photos',
-			'regex' => '',
-		],
-		[
-			'type'  => 1,
-			'name'  => 'Category',
-			'regex' => '',
-		],
-		[
-			'type'  => 1,
-			'name'  => 'Class',
-			'regex' => '',
-		],
-		[
-			'type'  => 3,
-			'name'  => 'TTL Qty',
-			'regex' => '',
-		],
-		[
-			'type'  => 3,
-			'name'  => 'Feature Text File',
-			'regex' => '',
-		],
-	];
+    const AVAILABLE_FIELDS = [
+        [
+            'type'  => 0,
+            'name'  => 'Vendor',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'Vendor part number ',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'Vendor punctuated part number ',
+        ],
+        [
+            'type'  => 2,
+            'name'  => 'UPC',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Dist 1 part num',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Dist 1 punctuated part num',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'Description',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'Long Description',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'Model',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'Size',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'Color',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Dist 1 dealer price',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'Retail price',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Dist 1 Your price',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Dist 1 warehouse',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'Status',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'MAP Y/N',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'MAP Price',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'Weight',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'Length',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'Width',
+        ],
+        [
+            'type'  => 0,
+            'name'  => 'Depth',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Kit Item',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Unit of Measure',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Truck Part Only',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Hazardous',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Photo',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Apparel',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Street',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Offroad',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Snowmobile',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'ATV',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Watercraft',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'VTwin',
+        ],
+        [
+            'type'  => 3,
+            'name'  => 'Tire',
+        ],
+    ];
+//	const AVAILABLE_FIELDS = [
+//		[
+//			'type'  => 2,
+//			'name'  => 'Part Number',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 0,
+//			'name'  => 'Alt Part#',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 0,
+//			'name'  => 'Description',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 3,
+//			'name'  => 'Dealer',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 3,
+//			'name'  => 'Retail',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 3,
+//			'name'  => 'West',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 3,
+//			'name'  => 'East',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 3,
+//			'name'  => 'Status',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 3,
+//			'name'  => 'MAPP Y/N',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 3,
+//			'name'  => 'MAPP Price',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 0,
+//			'name'  => 'Weight (Oz)',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 0,
+//			'name'  => 'Length',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 0,
+//			'name'  => 'Width',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 0,
+//			'name'  => 'Depth',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 0,
+//			'name'  => 'Long Description',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 1,
+//			'name'  => 'Brand',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 1,
+//			'name'  => 'Photo',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 2,
+//			'name'  => 'UPC',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 3,
+//			'name'  => 'Catalog Page',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 0,
+//			'name'  => 'Size',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 3,
+//			'name'  => 'Color',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 0,
+//			'name'  => 'Model',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 0,
+//			'name'  => 'Origin',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 1,
+//			'name'  => 'Alt Photos',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 1,
+//			'name'  => 'Category',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 1,
+//			'name'  => 'Class',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 3,
+//			'name'  => 'TTL Qty',
+//			'regex' => '',
+//		],
+//		[
+//			'type'  => 3,
+//			'name'  => 'Feature Text File',
+//			'regex' => '',
+//		],
+//	];
 
 	function __construct($data)
 	{
