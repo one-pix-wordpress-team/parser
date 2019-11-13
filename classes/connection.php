@@ -3,7 +3,7 @@
  * Работа с ftp подключением
  *
  * @package moto-parser
- * @version 1.5
+ * @version 1.5.2
  */
 class connection implements initInterface
 {
@@ -23,8 +23,7 @@ class connection implements initInterface
 	protected $conn_id;
 
 	/**
-	 * временно публичный
-	 * 
+	 * @todo временно публичный
 	 * @param array $data
 	 */
 	function __construct($data)
@@ -40,7 +39,7 @@ class connection implements initInterface
 
 		$this->cur_files = !empty($data['cur_files']) && is_array($data['cur_files']) ? array_flip($data['cur_files']) : [];
         $this->files_fields = $data['files_fields'] ?? [];
-        $this->local_dir = $download_dir . DIRECTORY_SEPARATOR . $this->host . DIRECTORY_SEPARATOR;
+        $this->local_dir = $download_dir . '/' . $this->host . '/';
 	}
 
 	/**
@@ -67,13 +66,13 @@ class connection implements initInterface
 		// занесение данных о полях файлов подключения в оперативный кеш
         // возможно это стоит убрать отсюда в другое место. Пока не до этого
         $files_fields = $c->get('files_fields');
-        if (!empty($files_fields)) {
+        if (!empty($files_fields) && is_array($files_fields)) {
             $core = dataCore::instance();
             $header_rules = $core->get_cash('header_rules');
             if (isset($header_rules) && is_array($header_rules))
-                $header_rules = array_merge($header_rules, $c->get('files_fields'));
+                $header_rules = array_merge($header_rules, $files_fields);
             else
-                $header_rules = $c->get('files_fields');
+                $header_rules = $files_fields;
             $core->set_cash('header_rules', $header_rules);
         }
 

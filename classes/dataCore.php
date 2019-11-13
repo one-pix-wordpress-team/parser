@@ -1,4 +1,6 @@
 <?php
+defined('ROOT_DIR') || exit;
+
 /**
  * Для работы с данными
  * 
@@ -131,9 +133,9 @@ class dataCore
 	 * @param $key string получение информации конкретного объекта по ключевому полю
 	 * @return array
 	 */
-	function get_data(string $type, $key='')
+	function get_data(string $type, string $key='')
 	{
-		$file = ROOT_DIR . DIRECTORY_SEPARATOR . self::DATA_DIR . $type . '.csv';
+		$file = ROOT_DIR . '/' . self::DATA_DIR . $type . '.csv';
 		$csv = new CSV($file);
 		$data = $csv->getCSV();
 		if (!$data || count($data) < 2)
@@ -155,13 +157,13 @@ class dataCore
 	}
 
 	/**
-	 * Установка информации объектов
+	 * Запись информации объектов
 	 * 
 	 * При совпадении ключевых полей информация будет перезаписана.
 	 * 
 	 * @todo Может возникнуть путаница, если поля во вложенных массивах сортированы поразному
 	 * @param $type string соответствующего типа
-	 * @param $data array
+	 * @param $data array массив массивов
 	 * @return bool
 	 */
 	function set_data(string $type, array $data)
@@ -170,7 +172,7 @@ class dataCore
 			array_unshift($data, array_keys(reset($data)));
 		}
 
-		$file = ROOT_DIR . DIRECTORY_SEPARATOR . self::DATA_DIR . $type . '.csv';
+		$file = ROOT_DIR . '/' . self::DATA_DIR . $type . '.csv';
 		$csv = new CSV($file);
 
         try {
@@ -224,11 +226,12 @@ class dataCore
 		return $this->set_data($type, $data);
 	}
 
-	/**
-	 * лайтовый геттер
-	 * 
-	 * @return mixed
-	 */
+    /**
+     * лайтовый геттер
+     *
+     * @param $name
+     * @return mixed
+     */
 	function get($name) {
 		return $this->$name;
 	}

@@ -36,14 +36,14 @@ class CSV {
             $mode = $mode ?? 'w';
             $handle = @fopen($this->_csv_file, $mode);
             if ($handle === false) {
-                throw new fileException("Не удалось создать файл для записи", $this->_csv_file);
+                throw new fileException('Не удалось создать файл для записи', $this->_csv_file);
             }
             //fputs($handle, chr(0xEF) . chr(0xBB) . chr(0xBF)); // BOM
         } elseif(is_writable($this->_csv_file)) {
             $mode = $mode ?? 'a';
             $handle = fopen($this->_csv_file, $mode);
         } else {
-            throw new fileException("Файл не доступен для записи", $this->_csv_file);
+            throw new fileException('Файл не доступен для записи', $this->_csv_file);
         }
 
         foreach ($csv as $line) {
@@ -65,7 +65,7 @@ class CSV {
         if (!is_writable($this->_csv_file))
             return false;
         
-        $handle = fopen($this->_csv_file, "r"); //Открываем csv для чтения
+        $handle = fopen($this->_csv_file, 'r'); //Открываем csv для чтения
 
         if (!$handle)
             return false;

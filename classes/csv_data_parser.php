@@ -3,7 +3,7 @@
  * Получение данных из файлов для добавления информации к БД
  * 
  * @package moto-parser
- * @version 1.2
+ * @version 1.2.1
  */
 class csv_data_parser
 {
@@ -15,20 +15,27 @@ class csv_data_parser
     protected $cur_file; // текущий обрабатываемый файл
     protected $distributor; // поставщик обрабатываемого файла
 
+    /**
+     * csv_data_parser constructor.
+     *
+     * @param array $files
+     */
 	function __construct(array $files)
     {
         $this->files = $files;
 
+        // массив одобренных полей
         $available_fields = field::AVAILABLE_FIELDS;
-        $core = dataCore::instance();
 
-        $header_rules = $core->get_cash('header_rules');
+        $header_rules = dataCore::instance()->get_cash('header_rules');
+//        Соотносит реальные названия столбцов в файлах с одобренными
 //        $header_rules = [
 //            'Part #' => 'Part Number',
 //            'Dealer' => 'Dealer',
 //            'UPC' => 'UPC',
 //        ];
 
+        // замена одобренных названий столбцов на их идентификаторы
         $header_rules = array_map(function($n) use ($available_fields){
             foreach($available_fields as $k => $v) {
                 if ($v['name'] == $n)
@@ -37,6 +44,7 @@ class csv_data_parser
             return false;
         }, $header_rules);
 
+        // удаление не одобренных названий
         $this->header_rules = array_filter($header_rules, function($n) {
             return false !== $n;
         });
@@ -68,6 +76,12 @@ class csv_data_parser
 	    return $this->main_data;
     }
 
+    /**
+     * Чтение данных из файла
+     *
+     * @param $file
+     * @return array|false
+     */
 	function get_file_content($file)
 	{
 		$csv = new CSV($file);
@@ -76,6 +90,12 @@ class csv_data_parser
 		return $content;
 	}
 
+    /**
+     * Определение идентификатора поля по названию
+     *
+     * @param $s_name
+     * @return int|false
+     */
 	function is_field($s_name) {
 //        if (($field = field::is_field($s_name, $this->available_fields)) !== false) {
         $field = $this->header_rules[$s_name] ?? false;
@@ -99,6 +119,12 @@ class csv_data_parser
         return $field;
     }
 
+    /**
+     * Получение одобренных данных из данных файла
+     *
+     * @param array $file_content
+     * @return array|false
+     */
 	function get_data(array $file_content)
 	{
 		// Если вдруг у нас нет контента

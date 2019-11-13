@@ -1,0 +1,342 @@
+body {
+  overflow: hidden;
+}
+
+.parser-header {
+  padding: 30px 0;
+  background: #007bff;
+  border-bottom: 1px solid #ededed;
+}
+
+.new-item-append {
+  position: absolute;
+  padding-top: 60px;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: 400px;
+  right: -420px;
+  background: #fff;
+}
+
+.new-parser-item {
+  .close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    cursor: pointer;
+  }
+  &.parser-item {
+    padding: 15px;
+  }
+}
+
+.new-item-append input {
+  margin: 30px 0;
+}
+
+.parser-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 0;
+  color: #fff;
+}
+
+.menu-wrapper {
+  font-size: 24px;
+}
+
+.parser-body {
+  margin-top: 30px;
+}
+
+.parser-input, .test-connection {
+  padding: 15px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.separator {
+  margin: 10px;
+}
+
+.add-new-item {
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  font-size: 37px;
+  line-height: 1;
+  font-weight: 900;
+  width: 54px;
+  height: 54px;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  cursor: pointer;
+  transition: all 1000ms;
+  &:hover {
+    transform: rotate(90deg) scale(1.2);
+  }
+}
+
+.remove-item {
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  font-size: 55px;
+  line-height: 0.15;
+  font-weight: 500;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  float: right;
+  position: absolute;
+  margin-left: calc(100% - 90px);
+  padding-left: 5px;
+}
+
+.item-info {
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  font-size: 55px;
+  line-height: 0.15;
+  font-weight: 500;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  float: right;
+  position: absolute;
+  margin-left: calc(100% - 90px);
+  padding-left: 5px;
+  font-size: 20px;
+  margin-left: calc(100% - 150px);
+}
+
+.item-edit {
+  position: absolute;
+  margin-left: calc(100% - 90px);
+}
+
+.spoiler {
+  margin-top: 30px;
+}
+
+.parser-item {
+  padding: 15px 0 30px 0;
+  margin: 15px 0 0 0;
+  border-bottom: 2px solid #ededed;
+}
+
+.head-item {
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.item-inner {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.headers {
+  padding-bottom: 15px;
+  border-bottom: 4px dashed #ededed;
+}
+
+.head-item:last-child .inner {
+  float: right;
+  margin-right: 30px;
+}
+
+.popup-config {
+  overflow: auto;
+  -webkit-box-shadow: 0px -2px 30px 22px rgba(50, 50, 50, 0.29);
+  -moz-box-shadow: 0px -2px 30px 22px rgba(50, 50, 50, 0.29);
+  box-shadow: 0px -2px 30px 22px rgba(50, 50, 50, 0.29);
+  background: #fff;
+  z-index: 99999;
+  position: absolute;
+  width: 900px;
+  left: calc(50% - 450px);
+  height: 600px;
+  .close {
+    position: absolute;
+    right: 30px;
+    cursor: pointer;
+    z-index: 99999999999999;
+  }
+}
+
+.popup-headers {
+  padding: 30px 0;
+  border-bottom: 4px dashed #ededed;
+  margin: 0 30px;
+  width: 100%;
+}
+
+.file-row {
+  width: 100%;
+  margin: 0 30px;
+  padding: 30px 0;
+  border-bottom: 1px solid #ededed;
+}
+
+.success-message {
+  display: none;
+  color: white;
+  font-weight: 700;
+  text-align: center;
+  padding: 30px;
+  background: #28a745;
+}
+
+.error-message {
+  display: none;
+  color: white;
+  font-weight: 700;
+  text-align: center;
+  padding: 30px;
+  background: #dc3545;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+.popup-add-files {
+  width: calc(100% - 64px);
+  height: calc(100vh - 64px);
+  top: 0px;
+  left: 32px;
+  overflow-y: auto;
+}
+
+@keyframes dance {
+  0% {
+    -webkit-transform: translateX(800%);
+    transform: translateX(800%);
+    visibility: visible;
+  }
+
+  49% {
+    -webkit-transform: translateX(0) scaleX(1);
+    transform: translateX(0) scaleX(1);
+  }
+
+  50% {
+    -webkit-transform: translateX(0) scaleX(-1);
+    transform: translateX(0) scaleX(-1);
+  }
+
+  99% {
+    -webkit-transform: translateX(400%) scaleX(-1);
+    transform: translateX(400%) scaleX(-1);
+  }
+
+  100% {
+    -webkit-transform: translateX(400%) scaleX(1);
+    transform: translateX(400%) scaleX(1);
+  }
+}
+
+
+.preloader {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  left: calc(50% - 125px);
+  top: calc(100% + 100%);
+  img {
+    height: 100%;
+  }
+}
+
+.wow-details {
+  padding: 15px;
+  border: 1px solid #ededed;
+  border-radius: 5px;
+  margin-top: 15px;
+}
+
+details {
+  &::before {
+    width: 100%;
+    height: 100%;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: inherit;
+    opacity: .15;
+    box-shadow: 0 .25em .5em #263238;
+    pointer-events: none;
+    transition: opacity .2s;
+    z-index: -1;
+  }
+  &[open] {
+    background-color: #FFF;
+    &::before {
+      opacity: .6;
+    }
+  }
+}
+
+summary {
+  padding: 1rem 2em 1rem 0;
+  display: block;
+  position: relative;
+  font-size: 1.33em;
+  font-weight: bold;
+  cursor: pointer;
+  &::before {
+    width: .75em;
+    height: 3px;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    content: '';
+    background-color: #007bff;
+    text-align: right;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    transition: -webkit-transform .2s ease-in-out;
+    transition: transform .2s ease-in-out;
+    transition: transform .2s ease-in-out, -webkit-transform .2s ease-in-out;
+  }
+  &::after {
+    width: .75em;
+    height: 3px;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    content: '';
+    background-color: #007bff;
+    text-align: right;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    transition: -webkit-transform .2s ease-in-out;
+    transition: transform .2s ease-in-out;
+    transition: transform .2s ease-in-out, -webkit-transform .2s ease-in-out;
+    -webkit-transform: translateY(-50%) rotate(90deg);
+    transform: translateY(-50%) rotate(90deg);
+  }
+}
+
+[open] summary::after {
+  -webkit-transform: translateY(-50%) rotate(180deg);
+  transform: translateY(-50%) rotate(180deg);
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+[open] summary {
+  border-bottom: 1px solid #ededed;
+  margin-bottom: 15px;
+}
+
+summary:focus {
+  outline: none;
+}

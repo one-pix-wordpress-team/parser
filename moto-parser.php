@@ -31,6 +31,7 @@ class parserPage {
         wp_register_style('bootstrap', '//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
         wp_register_style('font-awesome', '//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
         wp_register_style('parser', plugins_url('moto-parser/assets/css/style.css'));
+        wp_register_style('select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css');
         wp_deregister_script('jquery');
         wp_register_script('jquery', '//code.jquery.com/jquery-latest.min.js');
         wp_register_script('popper', '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', array('jquery'), null, false);
@@ -38,15 +39,18 @@ class parserPage {
         wp_register_script('dry-functions', plugins_url('moto-parser/assets/js/dry.functions.js'), array('jquery'), null, false);
         wp_register_script('parser-vars', plugins_url('moto-parser/assets/js/vars.js'), array('jquery'), null, false);
         wp_register_script('parser-scripts', plugins_url('moto-parser/assets/js/main.js'), array('jquery'), null, false);
+        wp_register_script('select2', '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js', array('jquery'), null, false);
         wp_enqueue_style('bootstrap');
         wp_enqueue_style('font-awesome');
         wp_enqueue_style('parser');
+        wp_enqueue_style('select2');
         wp_enqueue_script('jquery');
         wp_enqueue_script('popper');
         wp_enqueue_script('bootstrap');
         wp_enqueue_script('dry-functions');
         wp_enqueue_script('parser-vars');
         wp_enqueue_script('parser-scripts');
+        wp_enqueue_script('select2');
     }
 }
 new parserPage;
